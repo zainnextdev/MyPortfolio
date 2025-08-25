@@ -1,62 +1,58 @@
-# Zain Khalid - Full-Stack Portfolio
+# Zain Khalid - Full-Stack Portfolio (MyPortfolio)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/zain-khalid-23/zain-khalid-portfolio/main/public/og-image.png" alt="Zain Khalid Portfolio Banner" />
+  <a href="https://myportfolio-zainnextdev.vercel.app/" target="_blank">
+    <img src="https://raw.githubusercontent.com/zainnextdev/MyPortfolio/main/public/og-image.png" alt="Zain Khalid Portfolio Banner" />
+  </a>
 </p>
 
 <p align="center">
   <!-- Vercel Deployment Badge -->
-  <a href="https://zain-khalid-portfolio.vercel.app/" target="_blank">
+  <a href="https://myportfolio-zainnextdev.vercel.app/" target="_blank">
     <img src="https://img.shields.io/badge/Status-Deployed%20on%20Vercel-black?style=for-the-badge&logo=vercel" alt="Deployment Status" />
   </a>
   <!-- License Badge -->
-  <a href="https://github.com/zain-khalid-23/zain-khalid-portfolio/blob/main/LICENSE" target="_blank">
-    <img src="https://img.shields.io/github/license/zain-khalid-23/zain-khalid-portfolio?style=for-the-badge&color=00F5D4" alt="License" />
+  <a href="https://github.com/zainnextdev/MyPortfolio/blob/main/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/zainnextdev/MyPortfolio?style=for-the-badge&color=00F5D4" alt="License" />
   </a>
 </p>
 
-This repository contains the complete source code for my personal portfolio, a showcase of modern web architecture and interactive design. It's built from the ground up to be performant, visually stunning, and fully responsive, leveraging the power of the Vercel ecosystem.
+This repository contains the source code for my personal portfolio. It's an immersive showcase of modern web architecture and interactive design, built from the ground up with a focus on elite performance, stunning visuals, and a fluid user experience.
 
-**Live Site:** [**https://zain-khalid-portfolio.vercel.app/**](https://zain-khalid-portfolio.vercel.app/)
+**Live Site:** [**https://myportfolio-zainnextdev.vercel.app/**](https://myportfolio-zainnextdev.vercel.app/)
 
 ---
 
 ## 🛠️ Tech Stack & Architecture
 
-This project is built with a modern, type-safe, and scalable technology stack designed for elite performance and developer experience.
-
 | Category              | Technology                                                                                                                                                                                                                                                                                     |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Core Framework**    | [**Next.js 15**](https://nextjs.org/) (with App Router), [**React 19**](https://react.dev/)                                                                                                                                                                                                     |
+| **Core Framework**    | [**Next.js 15**](https://nextjs.org/) (App Router), [**React 19**](https://react.dev/)                                                                                                                                                                                                           |
 | **Language**          | [**TypeScript**](https://www.typescriptlang.org/)                                                                                                                                                                                                                                              |
-| **Styling**           | [**Tailwind CSS**](https://tailwindcss.com/) with custom themes & plugins                                                                                                                                                                                                                        |
-| **Animation**         | [**GSAP (GreenSock)**](https://greensock.com/gsap/) for high-performance timeline animations, [**Three.js**](https://threejs.org/) & [**React Three Fiber**](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) for 3D graphics. |
-| **Backend & API**     | [**Next.js API Routes**](https://nextjs.org/docs/app/building-your-application/routing/route-handlers), [**Resend**](https://resend.com/) for email delivery, [**Zod**](https://zod.dev/) for validation.                                                               |
-| **Deployment**        | [**Vercel**](https://vercel.com/) (Global Edge Network, CI/CD)                                                                                                                                                                                                                                 |
-| **Developer Tools**   | [**ESLint**](https://eslint.org/), [**Prettier**](https://prettier.io/), [**Git**](https://git-scm.com/)                                                                                                                                                                                          |
+| **Styling**           | [**Tailwind CSS**](https://tailwindcss.com/) with a custom, themeable design system.                                                                                                                                                                                                             |
+| **Animation**         | [**GSAP (GreenSock)**](https://greensock.com/gsap/) for high-performance timeline animations & [**Three.js**](https://threejs.org/) with [**React Three Fiber**](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) for interactive 3D graphics. |
+| **Backend & API**     | [**Next.js API Routes**](https://nextjs.org/docs/app/building-your-application/routing/route-handlers), [**Resend**](https://resend.com/) for email delivery, [**Zod**](https://zod.dev/) for server-side validation. |
+| **Deployment**        | [**Vercel**](https://vercel.com/) (Global Edge Network, Instant CI/CD)                                                                                                                                                                                                                         |
 
 ---
 
 ## ✨ Key Features
 
 -   **Interactive 3D Graphics:** Engaging visuals built with Three.js and React Three Fiber.
--   **Advanced GSAP Animations:** Complex, scroll-triggered, and physics-based animations for a fluid user experience.
--   **Command Palette:** A `Ctrl+K` command palette for quick navigation and actions.
--   **Theming System:** Switch between 'Obsidian', 'Marble', and 'Blueprint' themes with a smooth cross-fade transition.
--   **Custom Cursor:** A dynamic cursor that interacts with page elements.
--   **Smooth Scrolling:** Implemented with Lenis for a premium, fluid scroll feel.
--   **API Integration:** A secure API route for the contact form with server-side validation.
+-   **Advanced GSAP Animations:** Complex, scroll-triggered, and physics-based animations.
+-   **Command Palette:** A `Ctrl+K` interface for quick navigation and actions.
+-   **Multi-Theme System:** Seamlessly switch between distinct visual themes.
+-   **Custom Cursor & Smooth Scrolling:** For a premium, fluid browsing experience.
+-   **Secure API Endpoint:** A robust API route for the contact form with strong validation.
 
 ---
 
-## 🚀 Getting Started
-
-To run this project locally, follow these steps:
+## 🚀 Getting Started Locally
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/YOUR_GITHUB_USERNAME/zain-khalid-portfolio.git
-    cd zain-khalid-portfolio
+    git clone https://github.com/zainnextdev/MyPortfolio.git
+    cd MyPortfolio
     ```
 
 2.  **Install dependencies:**
@@ -65,7 +61,7 @@ To run this project locally, follow these steps:
     ```
 
 3.  **Set up environment variables:**
-    Create a file named `.env.local` in the root of the project and add your Resend API key:
+    Create a file named `.env.local` in the project root and add your Resend API key:
     ```env
     RESEND_API_KEY=your_resend_api_key_here
     ```
@@ -74,13 +70,7 @@ To run this project locally, follow these steps:
     ```bash
     npm run dev
     ```
-    Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
-
----
-
-## 🌐 Deployment
-
-This project is configured for seamless deployment on [Vercel](https://vercel.com). Simply fork the repository, import it into your Vercel account, and add the `RESEND_API_KEY` environment variable. Vercel's CI/CD will handle the rest automatically.
+    Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
