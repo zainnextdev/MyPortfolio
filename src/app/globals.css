@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- THEME DEFINITIONS --- */
+@layer base {
+  :root, [data-theme='obsidian'] {
+    --color-background: 0 0 0; /* #000000 */
+    --color-surface: 17 17 17; /* #111111 */
+    --color-primary: 234 234 234; /* #EAEAEA */
+    --color-secondary: 136 136 136; /* #888888 */
+    --color-accent: 0 245 212; /* #00F5D4 */
+    --color-accent-hover: 0 196 169; /* #00C4A9 */
+    --color-spotlight: 0 245 212; /* Teal for dark themes */
+  }
+
+  [data-theme='marble'] {
+    --color-background: 250 250 250; /* #FAFAFA - A soft, natural off-white */
+    --color-surface: 255 255 255;    /* #FFFFFF - Kept pure white for elevated surfaces */
+    --color-primary: 28 28 28;      /* #1C1C1C - A softer, charcoal black for text */
+    --color-secondary: 115 115 115; /* #737373 - A legible, complementary mid-gray */
+    --color-accent: 0 245 212;      /* #00F5D4 - Accent remains vibrant for brand consistency */
+    --color-accent-hover: 0 196 169;/* #00C4A9 */
+    --color-spotlight: 28 28 28; /* Subtle charcoal for light theme */
+  }
+
+  [data-theme='blueprint'] {
+    --color-background: 13 23 42; /* #0D172A - A deep navy */
+    --color-surface: 22 36 61; /* #16243D */
+    --color-primary: 234 234 234; /* #EAEAEA */
+    --color-secondary: 125 144 179; /* #7D90B3 */
+    --color-accent: 0 245 212; /* #00F5D4 */
+    --color-accent-hover: 0 196 169; /* #00C4A9 */
+    --color-spotlight: 0 245 212; /* Teal for dark themes */
+  }
+}
+
+html {
+  --scroll-velocity: 0;
+}
+
+/* Only hide the default cursor on devices with a fine pointer (e.g., a mouse) */
+@media (pointer: fine) {
+  body, a, button, [data-cursor-hover] {
+    cursor: none !important;
+  }
+
+  /* --- ADDITION: New global utility rule --- */
+  /* Any element with this attribute, and ALL of its children, will hide the default cursor */
+  [data-force-hide-cursor], [data-force-hide-cursor] * {
+    cursor: none !important;
+  }
+}
+
+/* --- OPTIMIZATION 3: CSS for Initial Animation States --- */
+/* This ensures text is hidden before GSAP runs, preventing flicker */
+.char-reveal-wrapper {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom; /* Aligns characters correctly */
+}
+.char-reveal-inner {
+  display: inline-block;
+  visibility: hidden; /* Use visibility to keep layout space */
+}
+/* --- ADDITION: The Guaranteed Rendering Fix --- */
+/* This utility forces an element onto its own compositing layer, fixing
+   bg-clip-text rendering bugs in Chrome when animating child elements. */
+.force-render-context {
+  transform: translateZ(0);
+}
