@@ -16,7 +16,6 @@ import Header from "@/components/core/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// --- ELITE SEO METADATA OVERHAUL ---
 const liveUrl = "https://zainkhalid.vercel.app";
 
 export const metadata: Metadata = {
@@ -32,6 +31,16 @@ export const metadata: Metadata = {
   authors: [{ name: "Zain Khalid", url: liveUrl }],
   creator: "Zain Khalid",
   
+  // --- START OF ELITE VERIFICATION INTEGRATION ---
+  /**
+   * Instructs Google to verify ownership of this site.
+   * This is the professional Next.js method for adding the verification meta tag.
+   */
+  verification: {
+    google: 'HwbZ9SEhNLkYaoxLskIGB11QX6tvZ5Ob3PawkTqGkLU',
+  },
+  // --- END OF ELITE VERIFICATION INTEGRATION ---
+
   // Canonical URL & Robots
   metadataBase: new URL(liveUrl),
   alternates: {
@@ -49,39 +58,24 @@ export const metadata: Metadata = {
     },
   },
   
-  // Open Graph (for social sharing on platforms like Facebook, LinkedIn)
+  // Open Graph & Twitter Cards... (rest of the metadata object is unchanged)
   openGraph: {
     title: "Zain Khalid | Full-Stack Architect & Next.js Specialist",
     description: "Architecting high-performance, visually stunning web experiences.",
     url: liveUrl,
     siteName: "Zain Khalid",
-    images: [
-      {
-        url: `${liveUrl}/og-image.png`, // Absolute URL is crucial
-        width: 1200,
-        height: 630,
-        alt: "Zain Khalid Portfolio",
-      },
-    ],
+    images: [{ url: `${liveUrl}/og-image.png`, width: 1200, height: 630, alt: "Zain Khalid Portfolio", }],
     locale: 'en_US',
     type: 'website',
   },
-  
-  // Twitter Card (for sharing on Twitter)
   twitter: {
     card: 'summary_large_image',
     title: "Zain Khalid | Full-Stack Architect & Next.js Specialist",
     description: "Architecting high-performance, visually stunning web experiences.",
-    creator: "@zain_nextdev", // IMPORTANT: Add your Twitter handle here
-    images: [`${liveUrl}/og-image.png`], // Absolute URL is crucial
+    creator: "@zain_nextdev",
+    images: [`${liveUrl}/og-image.png`],
   },
-
-  // Icons & Manifest
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
-  },
+  icons: { icon: '/favicon.ico', shortcut: '/favicon-16x16.png', apple: '/apple-touch-icon.png', },
   manifest: `${liveUrl}/site.webmanifest`,
 };
 
