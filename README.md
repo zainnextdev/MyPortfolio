@@ -8,7 +8,7 @@
 
 <p align="center">
   <!-- Vercel Deployment Badge -->
-  <a href="https://myportfolio-zainnextdev.vercel.app/" target="_blank">
+  <a href="https://zainkhalid.vercel.app/" target="_blank">
     <img src="https://img.shields.io/badge/Status-Deployed%20on%20Vercel-black?style=for-the-badge&logo=vercel" alt="Deployment Status" />
   </a>
   <!-- License Badge -->
@@ -19,7 +19,7 @@
 
 This repository contains the source code for my personal portfolio. It's an immersive showcase of modern web architecture and interactive design, built from the ground up with a focus on elite performance, stunning visuals, and a fluid user experience.
 
-**Live Site:** [**https://myportfolio-zainnextdev.vercel.app/**](https://myportfolio-zainnextdev.vercel.app/)
+**Live Site:** [**https://zainkhalid.vercel.app/**](https://zainkhalid.vercel.app/)
 
 ---
 
