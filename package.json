@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "build:analyze": "ANALYZE=true next build"
-  },
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "build:analyze": "ANALYZE=true next build",
+  "lhci:install": "npm install -g @lhci/cli",
+  "lhci:build": "npm run build",
+  "lhci:run": "lhci autorun"
+},
   "dependencies": {
     "@react-three/drei": "^10.7.2",
     "@react-three/fiber": "^9.3.0",
@@ -29,6 +32,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@lhci/cli": "^0.15.1",
     "@next/bundle-analyzer": "^15.5.0",
     "@types/d3-geo": "^3.1.0",
     "@types/node": "^20",
@@ -39,6 +43,7 @@
     "eslint-config-next": "15.4.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^46.0.3"
   }
 }

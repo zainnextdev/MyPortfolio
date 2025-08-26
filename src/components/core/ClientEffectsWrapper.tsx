@@ -1,4 +1,4 @@
-// src/components/core/ClientEffectsWrapper.tsx -- NEW FILE
+// src/components/core/ClientEffectsWrapper.tsx -- ENHANCED FOR ACCESSIBILITY
 
 "use client";
 
@@ -7,14 +7,20 @@ import CustomCursor from "@/components/core/CustomCursor";
 import { CelestialCanvas } from "@/components/core/CelestialCanvas";
 
 export default function ClientEffectsWrapper() {
-  // We'll consider "desktop" to be screens wider than 1024px.
-  // This is a common breakpoint where devices have both the screen real estate
-  // and the processing power for these effects.
-  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  // --- ACCESSIBILITY UPGRADE ---
+  // We now check for three conditions:
+  // 1. Is the user on a desktop-sized screen?
+  // 2. Does their device support fine pointing (i.e., a mouse, not a touch screen)?
+  // 3. Has the user NOT requested reduced motion in their OS settings?
 
-  // Only render these expensive components on the client side for desktop users.
-  // For mobile users, this component renders nothing, saving massive resources.
-  if (isDesktop) {
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
+  const hasFinePointer = useMediaQuery('(pointer: fine)');
+
+  // Only render the full effects if all conditions are met.
+  const shouldRenderEffects = isDesktop && hasFinePointer && !prefersReducedMotion;
+
+  if (shouldRenderEffects) {
     return (
       <>
         <CelestialCanvas />
@@ -23,6 +29,5 @@ export default function ClientEffectsWrapper() {
     );
   }
 
-  // Return null for non-desktop environments
   return null;
 }

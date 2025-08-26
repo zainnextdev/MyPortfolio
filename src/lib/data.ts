@@ -1,19 +1,18 @@
-// src/lib/data.ts
+// src/lib/data.ts -- REFINED WITH CASE STUDY FORMAT
 
 export const projectsData = [
   {
     id: 1,
     title: "Genius Mart",
-    tagline: "A Modern, Performant E-commerce Platform for Pakistan",
-    description: "Genius Mart is a premium online grocery platform designed for speed and reliability, even on slower networks. It demonstrates how modern web tech can deliver a native-app-like experience, built from scratch in just 26 days.",
+    tagline: "High-Performance E-commerce Platform",
+    description: "The challenge was to build a premium online grocery store for the Pakistani market that felt as fast and responsive as a native app, even on slower networks. The solution involved a server-first architecture using Next.js, resulting in an ultra-fast, PWA-ready platform with a 95+ Lighthouse score, built from scratch in 26 days.",
     features: [
-      "Robust Authentication with Google OAuth",
+      "Robust Google OAuth Authentication",
       "Instant Live Search (<300ms)",
-      "Dynamic Shopping Cart & Persistent Wishlist",
-      "Advanced Product Filtering & Sorting",
-      "Secure Paymob Payment Gateway Integration",
+      "Dynamic Shopping Cart & Wishlist",
+      "Secure Paymob Payment Gateway",
       "Comprehensive User Dashboard",
-      "Fully Responsive PWA",
+      "Fully Responsive PWA Design",
     ],
     stack: [
       "Next.js 15",
@@ -23,21 +22,21 @@ export const projectsData = [
       "Vercel",
       "Cloudinary",
     ],
-    image: "/projects/genius-mart-display.png", // IMPORTANT: Create this image
+    image: "/projects/genius-mart-display.png",
     liveSiteUrl: "https://geniusmart.vercel.app/",
   },
   {
     id: 2,
     title: "Genius Mart Admin Portal",
-    tagline: "An Enterprise-Grade Backend Management System",
-    description: "This portal tackles the clunky nature of standard e-commerce backends by providing a blazing-fast, intuitive, and secure interface for managing the Genius Mart platform. It features a hyper-granular, per-user permission system for enterprise-grade security.",
+    tagline: "Enterprise-Grade Backend Management System",
+    description: "Standard e-commerce backends are often slow and clunky. I engineered a custom, blazing-fast admin portal with a hyper-granular, per-user permission system. The outcome is an intuitive, secure, and highly efficient interface that allows for enterprise-grade management of products, orders, and users.",
     features: [
-      "Blazing-Fast Analytics Dashboard",
+      "Real-time Analytics Dashboard",
       "Granular, Per-User Permission System",
-      "Dynamic, Action-Based UI (real-time privileges)",
-      "Professional PDF Invoice Generator",
+      "Dynamic, Action-Based UI",
+      "Professional PDF Invoice Generation",
       "Row Level Security (RLS) Policies",
-      "Custom RPC Functions in PL/pgSQL",
+      "Custom PL/pgSQL Database Functions",
     ],
     stack: [
       "Next.js 15",
@@ -47,20 +46,21 @@ export const projectsData = [
       "Ant Design 5",
       "Zustand",
     ],
-    image: "/projects/admin-portal-display.png", // IMPORTANT: Create this image
+    image: "/projects/admin-portal-display.png",
+    // No live site URL for admin portals
   },
   {
     id: 3,
     title: "AJ Collections",
-    tagline: "A Bespoke E-commerce Experience for Fine Accessories",
-    description: "AJ Collections is an online jewelry and fashion accessories store crafted from the ground up. It focuses on delivering a highly attractive, fast, and professional user experience, ensuring every interaction is as curated as the products themselves.",
+    tagline: "Bespoke E-commerce for Fine Accessories",
+    description: "The goal was to create a digital storefront that mirrored the elegance of the jewelry itself. By building a custom Next.js application from the ground up, I delivered a highly attractive and performant user experience, focusing on visual fidelity and a seamless, secure checkout flow to drive conversions.",
     features: [
       "Advanced Image Zoom & Product Gallery",
       "Secure Multi-Step Checkout Flow",
-      "Personalized User Accounts & Order History",
+      "Personalized User Accounts",
       "Dynamic Filtering by Category & Material",
-      "Optimized for Core Web Vitals & Performance",
-      "Custom Admin Panel for Inventory Management",
+      "Optimized for Core Web Vitals",
+      "Custom Admin Inventory Management",
     ],
     stack: [
       "Next.js",
@@ -70,7 +70,7 @@ export const projectsData = [
       "Supabase Auth",
       "Supabase Storage",
     ],
-    image: "/projects/ajcollections-display.png", // IMPORTANT: Create this image
+    image: "/projects/ajcollections-display.png",
     liveSiteUrl: "https://ajcollections.vercel.app/",
   },
 ];
