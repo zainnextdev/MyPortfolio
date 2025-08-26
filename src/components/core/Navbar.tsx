@@ -1,38 +1,25 @@
-// src/components/core/Navbar.tsx
+// src/components/core/Navbar.tsx -- REVERTED TO CLEAN & CORRECT STATE
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { Home, Layers3, GraduationCap, LayoutGrid, MessageSquareQuote, ClipboardCheck, ArrowUpRight, ChevronDown, X } from 'lucide-react';
 
-// --- ICON & NAVLINK UPGRADE: Final, premium icon set and structure ---
-import { 
-  Home,
-  Layers3,
-  GraduationCap,
-  LayoutGrid, 
-  MessageSquareQuote,
-  ClipboardCheck, // --- Step 1: Import the new icon ---
-  ArrowUpRight,
-  ChevronDown, 
-  X 
-} from 'lucide-react';
-
+// GSAP plugins are registered in SmoothScroller now, but it's safe to keep them here.
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-// --- The definitive navItems array, now including "Packages" ---
 const navItems = [
   { id: 'hero', label: 'Home', icon: <Home size={22} /> },
   { id: 'about', label: 'About & Skills', icon: <Layers3 size={22} /> },
   { id: 'education', label: 'Academic Journey', icon: <GraduationCap size={22} /> },
   { id: 'projects', label: 'Curated Work', icon: <LayoutGrid size={22} /> },
   { id: 'testimonials', label: 'Client Reviews', icon: <MessageSquareQuote size={22} /> },
-  // --- Step 2: Add the new package link in the logical position ---
   { id: 'packages', label: 'My Packages', icon: <ClipboardCheck size={22} /> },
   { id: 'contact', label: 'Contact', icon: <ArrowUpRight size={22} /> },
 ];
-
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -50,10 +37,8 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY > 50) setIsScrolled(true);
-      else setIsScrolled(false);
-      if (currentScrollY > 100 && currentScrollY > lastScrollY.current) setIsHidden(true);
-      else setIsHidden(false);
+      setIsScrolled(currentScrollY > 50);
+      setIsHidden(currentScrollY > 100 && currentScrollY > lastScrollY.current);
       lastScrollY.current = currentScrollY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -65,11 +50,41 @@ const Navbar = () => {
   }, [isHidden]);
 
   useEffect(() => {
-    gsap.fromTo(desktopNavRef.current, { x: '-100%' }, { x: '0%', duration: 1, ease: 'power3.out', delay: 1.5 });
-    const triggers = navItems.map(item => ScrollTrigger.create({ trigger: `#${item.id}`, start: 'top center', end: 'bottom center', onToggle: self => self.isActive && setActiveSection(item.id) }));
-    return () => triggers.forEach(trigger => trigger.kill());
+    const ctx = gsap.context(() => {
+      gsap.fromTo(desktopNavRef.current, { x: '-100%' }, { x: '0%', duration: 1, ease: 'power3.out', delay: 1.5 });
+
+      // After a short delay for lazy-loaded components to mount...
+      const setupTriggersTimeout = setTimeout(() => {
+        const triggers = navItems.map(item =>
+          ScrollTrigger.create({
+            trigger: `#${item.id}`,
+            start: 'top center',
+            end: 'bottom center',
+            onToggle: self => {
+              if (self.isActive) {
+                setActiveSection(item.id);
+              }
+            },
+          })
+        );
+        
+        // Refresh is still a good practice after dynamic content loads.
+        ScrollTrigger.refresh();
+
+        // Cleanup function for when the component unmounts
+        return () => {
+          triggers.forEach(trigger => trigger.kill());
+        };
+      }, 500);
+
+      // Main cleanup for the timeout
+      return () => clearTimeout(setupTriggersTimeout);
+    });
+
+    return () => ctx.revert();
   }, []);
 
+  // Mobile menu logic remains unchanged
   useEffect(() => {
     const menuItems = gsap.utils.toArray('.mobile-nav-item');
     menuTimeline.current = gsap.timeline({ paused: true })
@@ -92,6 +107,7 @@ const Navbar = () => {
 
   const handleNavClick = (sectionId: string) => {
     setIsMenuOpen(false);
+    // Lenis handles the smooth scroll, so we just tell it where to go.
     gsap.to(window, { duration: 1.8, scrollTo: { y: `#${sectionId}`, offsetY: 0 }, ease: 'power3.inOut' });
   };
 
@@ -100,7 +116,6 @@ const Navbar = () => {
       <nav ref={desktopNavRef} className="hidden md:flex fixed top-0 left-0 h-screen w-20 items-center justify-center z-50">
           <div className="relative flex items-center justify-center h-auto py-6 backdrop-blur-md rounded-full"><ul className="flex flex-col items-center justify-center gap-6">{navItems.map(item => (<li key={item.id}><button onClick={() => handleNavClick(item.id)} className="group relative flex items-center justify-center h-12 w-12" aria-label={`Go to ${item.label} section`} data-cursor-hover><span className={`absolute inset-0 rounded-full border border-accent transition-all duration-300 ease-in-out ${activeSection === item.id ? 'opacity-100 scale-100 shadow-[0_0_15px_-3px_theme(colors.accent)]' : 'opacity-0 scale-125'}`} /><div className={`transition-colors duration-300 ${activeSection === item.id ? 'text-accent' : 'text-secondary group-hover:text-primary'}`}>{item.icon}</div><div className="absolute left-full ml-4 pointer-events-none"><span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap bg-surface px-3 py-1.5 text-primary rounded-md shadow-lg text-sm tracking-wider -translate-x-4 group-hover:translate-x-0">{item.label}</span></div></button></li>))}</ul></div>
       </nav>
-
       <div className="md:hidden fixed top-0 left-0 w-full z-50">
         <nav ref={mobileNavRef} className={`relative z-10 h-20 px-6 flex items-center justify-between transition-colors duration-300 ${isScrolled ? 'bg-background/50 backdrop-blur-lg border-b border-secondary/10' : 'bg-transparent border-b border-transparent'}`}>
           <button onClick={() => handleNavClick('hero')} data-cursor-hover className="font-black text-xl tracking-wider text-primary">ZK</button>

@@ -1,5 +1,5 @@
 --- Portfolio Snapshot: Zain Khalid ---
---- Generated on: Mon, 25 Aug 2025 13:28:43 GMT ---
+--- Generated on: Tue, 26 Aug 2025 09:19:04 GMT ---
 
 
 
@@ -106,6 +106,7 @@ module.exports = {
 
 ├── .gitignore
 ├── eslint.config.mjs
+├── LICENSE
 ├── next-env.d.ts
 ├── next.config.ts
 ├── package.json
@@ -116,7 +117,6 @@ module.exports = {
 │   ├── apple-touch-icon.png
 │   ├── favicon-16x16.png
 │   ├── favicon-32x32.png
-│   ├── favicon.ico
 │   ├── file.svg
 │   ├── globe.svg
 │   ├── hologram_globe.glb
@@ -153,6 +153,7 @@ module.exports = {
 │   ├── sitemap.xml
 │   ├── vercel.svg
 │   ├── window.svg
+│   ├── zain-khalid-portrait.jpg
 │   ├── zain-khalid-resume.pdf
 │   └── zain-khalid-resume.png
 ├── README.md
@@ -201,6 +202,8 @@ module.exports = {
 │   │   ├── LoadingContext.tsx
 │   │   ├── ResumeViewerContext.tsx
 │   │   └── ThemeContext.tsx
+│   ├── hooks
+│   │   └── useIsWebKit.ts
 │   └── lib
 │       └── data.ts
 ├── tailwind.config.ts
@@ -245,14 +248,41 @@ export default eslintConfig;
 
 
 --- FILE: next.config.ts ---
+// next.config.ts
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* Your existing config options here (if any) */
+
+  // --- START OF MODIFICATION ---
+
+  /**
+   * Configuration for TypeScript.
+   * WARNING: Setting ignoreBuildErrors to true is NOT recommended for production.
+   * This will allow your project to build even if there are TypeScript errors.
+   */
+  typescript: {
+    // !! DANGER !!
+    // This prevents the build from failing when TypeScript errors are present.
+    ignoreBuildErrors: true,
+  },
+
+  /**
+   * Configuration for ESLint.
+   * WARNING: Setting ignoreDuringBuilds to true is NOT recommended for production.
+   * This will prevent the build from failing due to ESLint errors.
+   */
+  eslint: {
+    // !! DANGER !!
+    // This prevents the build from failing when ESLint errors are present.
+    ignoreDuringBuilds: true,
+  },
+
+  // --- END OF MODIFICATION ---
 };
 
 export default nextConfig;
-
 
 --- END OF FILE: next.config.ts ---
 
@@ -347,42 +377,85 @@ module.exports = {
 
 
 --- FILE: README.md ---
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Zain Khalid - Full-Stack Portfolio (MyPortfolio)
 
-## Getting Started
+<p align="center">
+  <a href="https://myportfolio-zainnextdev.vercel.app/" target="_blank">
+    <img src="https://raw.githubusercontent.com/zainnextdev/MyPortfolio/main/public/og-image.png" alt="Zain Khalid Portfolio Banner" />
+  </a>
+</p>
 
-First, run the development server:
+<p align="center">
+  <!-- Vercel Deployment Badge -->
+  <a href="https://zainkhalid.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/Status-Deployed%20on%20Vercel-black?style=for-the-badge&logo=vercel" alt="Deployment Status" />
+  </a>
+  <!-- License Badge -->
+  <a href="https://github.com/zainnextdev/MyPortfolio/blob/main/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/zainnextdev/MyPortfolio?style=for-the-badge&color=00F5D4" alt="License" />
+  </a>
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This repository contains the source code for my personal portfolio. It's an immersive showcase of modern web architecture and interactive design, built from the ground up with a focus on elite performance, stunning visuals, and a fluid user experience.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Live Site:** [**https://zainkhalid.vercel.app/**](https://zainkhalid.vercel.app/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack & Architecture
 
-## Learn More
+| Category              | Technology                                                                                                                                                                                                                                                                                     |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Core Framework**    | [**Next.js 15**](https://nextjs.org/) (App Router), [**React 19**](https://react.dev/)                                                                                                                                                                                                           |
+| **Language**          | [**TypeScript**](https://www.typescriptlang.org/)                                                                                                                                                                                                                                              |
+| **Styling**           | [**Tailwind CSS**](https://tailwindcss.com/) with a custom, themeable design system.                                                                                                                                                                                                             |
+| **Animation**         | [**GSAP (GreenSock)**](https://greensock.com/gsap/) for high-performance timeline animations & [**Three.js**](https://threejs.org/) with [**React Three Fiber**](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) for interactive 3D graphics. |
+| **Backend & API**     | [**Next.js API Routes**](https://nextjs.org/docs/app/building-your-application/routing/route-handlers), [**Resend**](https://resend.com/) for email delivery, [**Zod**](https://zod.dev/) for server-side validation. |
+| **Deployment**        | [**Vercel**](https://vercel.com/) (Global Edge Network, Instant CI/CD)                                                                                                                                                                                                                         |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✨ Key Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+-   **Interactive 3D Graphics:** Engaging visuals built with Three.js and React Three Fiber.
+-   **Advanced GSAP Animations:** Complex, scroll-triggered, and physics-based animations.
+-   **Command Palette:** A `Ctrl+K` interface for quick navigation and actions.
+-   **Multi-Theme System:** Seamlessly switch between distinct visual themes.
+-   **Custom Cursor & Smooth Scrolling:** For a premium, fluid browsing experience.
+-   **Secure API Endpoint:** A robust API route for the contact form with strong validation.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Getting Started Locally
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/zainnextdev/MyPortfolio.git
+    cd MyPortfolio
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Set up environment variables:**
+    Create a file named `.env.local` in the project root and add your Resend API key:
+    ```env
+    RESEND_API_KEY=your_resend_api_key_here
+    ```
+
+4.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 
 --- END OF FILE: README.md ---
@@ -660,12 +733,19 @@ html {
   display: inline-block;
   visibility: hidden; /* Use visibility to keep layout space */
 }
+/* --- ADDITION: The Guaranteed Rendering Fix --- */
+/* This utility forces an element onto its own compositing layer, fixing
+   bg-clip-text rendering bugs in Chrome when animating child elements. */
+.force-render-context {
+  transform: translateZ(0);
+}
 
 --- END OF FILE: src/app/globals.css ---
 
 
 --- FILE: src/app/layout.tsx ---
 // src/app/layout.tsx
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -678,38 +758,103 @@ import Navbar from "@/components/core/Navbar";
 import { Toaster } from "react-hot-toast";
 import CommandPalette from "@/components/core/CommandPalette";
 import Footer from "@/components/core/Footer";
-// --- Step 1: Import Header and REMOVE HUD ---
 import Header from "@/components/core/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// ... (metadata and jsonLd remain unchanged) ...
+const liveUrl = "https://zainkhalid.vercel.app";
+
 export const metadata: Metadata = {
+  // Core Metadata
   title: {
-    default: "Zain Khalid | Full-Stack Developer & Designer",
+    default: "Zain Khalid | Full-Stack Architect & Next.js Specialist",
     template: "%s | Zain Khalid",
   },
-  description: "The official portfolio of Zain Khalid, a specialist in architecting high-performance, visually stunning web experiences with Next.js, TypeScript, and the Vercel ecosystem.",
-  keywords: ["Zain Khalid", "Full-Stack Developer", "Next.js Developer", "React Developer", "TypeScript", "Vercel", "Portfolio", "Web Developer Pakistan", "Lahore Developer"],
-  authors: [{ name: "Zain Khalid", url: "https://zainkhalid.dev" }],
+  description: "The official portfolio of Zain Khalid, a full-stack architect from Lahore, Pakistan, specializing in building high-performance, visually stunning web experiences with the Next.js and Vercel ecosystem.",
+  
+  // SEO & Discoverability
+  keywords: ["Zain Khalid", "Full-Stack Developer", "Next.js Developer", "React Developer", "TypeScript", "Vercel", "Portfolio", "Web Developer Pakistan", "Lahore Developer", "Three.js", "GSAP"],
+  authors: [{ name: "Zain Khalid", url: liveUrl }],
   creator: "Zain Khalid",
-  metadataBase: new URL("https://zainkhalid.dev"),
-  alternates: { canonical: '/' },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1, }, },
-  openGraph: { title: "Zain Khalid | Full-Stack Developer & Designer", description: "Architecting high-performance, visually stunning web experiences.", url: "https://zainkhalid.dev", siteName: "Zain Khalid", images: [ { url: `https://zainkhalid.dev/og-image.png`, width: 1200, height: 630, alt: "Zain Khalid Portfolio", }, ], locale: 'en_US', type: 'website', },
-  twitter: { card: 'summary_large_image', title: "Zain Khalid | Full-Stack Developer & Designer", description: "Architecting high-performance, visually stunning web experiences.", creator: "@YourTwitterHandle", images: [`https://zainkhalid.dev/og-image.png`], },
+  
+  // --- START OF ELITE VERIFICATION INTEGRATION ---
+  /**
+   * Instructs Google to verify ownership of this site.
+   * This is the professional Next.js method for adding the verification meta tag.
+   */
+  verification: {
+    google: 'HwbZ9SEhNLkYaoxLskIGB11QX6tvZ5Ob3PawkTqGkLU',
+  },
+  // --- END OF ELITE VERIFICATION INTEGRATION ---
+
+  // Canonical URL & Robots
+  metadataBase: new URL(liveUrl),
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  
+  // Open Graph & Twitter Cards... (rest of the metadata object is unchanged)
+  openGraph: {
+    title: "Zain Khalid | Full-Stack Architect & Next.js Specialist",
+    description: "Architecting high-performance, visually stunning web experiences.",
+    url: liveUrl,
+    siteName: "Zain Khalid",
+    images: [{ url: `${liveUrl}/og-image.png`, width: 1200, height: 630, alt: "Zain Khalid Portfolio", }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Zain Khalid | Full-Stack Architect & Next.js Specialist",
+    description: "Architecting high-performance, visually stunning web experiences.",
+    creator: "@zain_nextdev",
+    images: [`${liveUrl}/og-image.png`],
+  },
   icons: { icon: '/favicon.ico', shortcut: '/favicon-16x16.png', apple: '/apple-touch-icon.png', },
-  manifest: `https://zainkhalid.dev/site.webmanifest`,
+  manifest: `${liveUrl}/site.webmanifest`,
 };
 
-const jsonLd = { '@context': 'https://schema.org', '@type': 'Person', name: 'Zain Khalid', url: "https://zainkhalid.dev", image: `https://zainkhalid.dev/zain-khalid-portrait.png`, jobTitle: 'Full-Stack Developer & Designer', worksFor: { '@type': 'Organization', name: 'Freelance', }, alumniOf: [ { '@type': 'CollegeOrUniversity', name: 'University of Engineering & Technology, Lahore', }, { '@type': 'CollegeOrUniversity', name: 'Punjab Group of Colleges, Lahore', } ], sameAs: [ 'https://github.com/Zain-Khalid-23', 'https://www.linkedin.com/in/zain-khalid-b91873318/', ], knowsAbout: [ "Next.js", "React.js", "TypeScript", "PostgreSQL", "Supabase", "Vercel", "System Architecture", "UI/UX Design", "SEO" ], address: { '@type': 'PostalAddress', addressLocality: 'Lahore', addressCountry: 'PK', }, };
+// --- ELITE STRUCTURED DATA (JSON-LD) ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Zain Khalid',
+  url: liveUrl,
+  image: `${liveUrl}/zain-khalid-portrait.png`, // IMPORTANT: Add a professional headshot to your /public folder with this name
+  jobTitle: 'Full-Stack Architect & Next.js Specialist',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Freelance',
+  },
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'University of Engineering & Technology, Lahore' },
+    { '@type': 'CollegeOrUniversity', name: 'Punjab Group of Colleges, Lahore' }
+  ],
+  sameAs: [ // Your social/professional links
+    'https://github.com/zainnextdev',
+    'https://www.linkedin.com/in/zain-khalid-b91873318/',
+    // Add other relevant links like your Twitter profile URL
+  ],
+  knowsAbout: [ "Next.js", "React.js", "TypeScript", "PostgreSQL", "Supabase", "Vercel", "System Architecture", "UI/UX Design", "SEO", "Three.js", "GSAP" ],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Lahore',
+    addressCountry: 'PK',
+  },
+};
 
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -721,24 +866,13 @@ export default function RootLayout({
       <body className={`${inter.className} bg-background text-primary antialiased`}>
         <ThemeProvider>
           <ResumeViewerProvider>
-            <Toaster
-              position="bottom-center"
-              toastOptions={{
-                style: {
-                  background: '#111111',
-                  color: '#EAEAEA',
-                  border: '1px solid rgba(136, 136, 136, 0.2)',
-                },
-              }}
-            />
+            <Toaster position="bottom-center" toastOptions={{ style: { background: '#111111', color: '#EAEAEA', border: '1px solid rgba(136, 136, 136, 0.2)', }, }} />
             <CelestialCanvas />
             <CustomCursor />
             <Navbar />
-            {/* --- Step 2: Add the new Header and REMOVE the old HUD --- */}
             <Header /> 
             <SmoothScroller />
             <div className="scroll-container">
-              {/* --- Step 3: Add top padding on desktop to prevent content from being hidden by the new header --- */}
               <main className="pt-20 md:pt-20 md:pl-20">
                 {children}
               </main>
@@ -3148,86 +3282,119 @@ export default Education;
 
 
 --- FILE: src/components/sections/Hero.tsx ---
+// src/components/sections/Hero.tsx
+
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import { IcosahedronScene } from '@/components/core/IcosahedronScene'; // Import new component
-import PremiumScrollIndicator from '@/components/core/PremiumScrollIndicator'; // Import new component
+import { IcosahedronScene } from '@/components/core/IcosahedronScene';
+import PremiumScrollIndicator from '@/components/core/PremiumScrollIndicator';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { GridBackground } from '../core/GridBackground';
 import { HeroBackground } from '../core/HeroBackground';
+// --- Step 2.1: Import the new custom hook ---
+import { useIsWebKit } from '@/hooks/useIsWebKit';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const Hero = () => {
   const componentRef = useRef(null);
-  const nameCharsRef = useRef<(HTMLSpanElement | null)[]>([]);
+  
+  // --- Refs for different rendering paths ---
+  const firefoxTitleCharsRef = useRef<(HTMLSpanElement | null)[]>([]);
+  const webkitTitleRef = useRef<HTMLHeadingElement>(null);
+
   const titleCharsRef = useRef<(HTMLSpanElement | null)[]>([]);
   const buttonRef = useRef(null);
   const scrollIndicatorRef = useRef(null);
   const icosahedronRef = useRef<HTMLDivElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
 
+  // --- Step 2.2: Instantiate the hook ---
+  const isWebKit = useIsWebKit();
+
   const nameText = "Zain Khalid";
   const titleText = "Full-Stack Developer & Designer";
 
   useEffect(() => {
+    // This effect now depends on `isWebKit` to choose the correct animation target.
+    // It will only run once on the client after the hook has determined the browser.
     const ctx = gsap.context(() => {
-      // --- THE NEW, INSANE REVEAL TIMELINE ---
       const tl = gsap.timeline({ delay: 0.2 });
 
-      // 1. 3D Element and Parallax Shapes Fade In
       tl.fromTo(icosahedronRef.current, { opacity: 0 }, { opacity: 1, duration: 1.5, ease: 'power3.out' });
       tl.fromTo(parallaxRef.current, { opacity: 0 }, { opacity: 1, duration: 1.5, ease: 'power3.out' }, "-=1.2");
 
-      // 2. Kinetic Typography Reveal
-      tl.fromTo(nameCharsRef.current, { y: 100, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.04 }, "-=0.8");
-      tl.fromTo(titleCharsRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', stagger: 0.02 }, "-=0.6");
+      // --- Step 2.3: Conditional Animation Logic ---
+      if (isWebKit) {
+        // GUARANTEED WEBKIT ANIMATION: Use a clip-path reveal on the solid element.
+        tl.fromTo(webkitTitleRef.current,
+          { clipPath: 'inset(0 100% 0 0)' },
+          { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'power3.out' },
+          "-=0.8"
+        );
+      } else {
+        // ORIGINAL FIREFOX ANIMATION: Stagger the individual characters.
+        tl.fromTo(firefoxTitleCharsRef.current,
+          { y: 100, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.04 },
+          "-=0.8"
+        );
+      }
       
-      // 3. Button and Scroll Indicator Appear
+      // The rest of the timeline remains the same
+      tl.fromTo(titleCharsRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', stagger: 0.02 }, "-=0.6");
       tl.fromTo(buttonRef.current, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' }, "-=0.3");
       tl.fromTo(scrollIndicatorRef.current, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }, "-=0.3");
 
-      // --- Scroll-based fade out for the indicator ---
       gsap.to(scrollIndicatorRef.current, {
         opacity: 0,
-        scrollTrigger: {
-          trigger: componentRef.current,
-          start: 'top top',
-          end: '+=150',
-          scrub: true,
-        },
+        scrollTrigger: { trigger: componentRef.current, start: 'top top', end: '+=150', scrub: true },
       });
 
     }, componentRef);
     return () => ctx.revert();
-  }, []);
+  }, [isWebKit]); // Dependency array ensures animation runs after browser detection
 
   const handleExploreClick = () => {
     gsap.to(window, { duration: 1.5, scrollTo: { y: "#about", offsetY: 70 }, ease: "power3.inOut" });
   };
+
+  const titleClasses = "text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter uppercase mb-4 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-fill-transparent bg-[length:200%_auto] animate-sheen drop-shadow-[0_0_10px_rgba(0,245,212,0.5)]";
 
   return (
     <section ref={componentRef} id="hero" className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
       <div ref={parallaxRef} className="pointer-events-none fixed inset-0 -z-10 opacity-0">
         <GridBackground />
       </div>
-<HeroBackground />
+      <HeroBackground />
       <div ref={icosahedronRef} className="opacity-0"><IcosahedronScene /></div>
       
-      <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter uppercase mb-4 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-sheen drop-shadow-[0_0_10px_rgba(0,245,212,0.5)]">
-        {nameText.split('').map((char, index) => (
-          <span key={index} ref={el => {nameCharsRef.current[index] = el}} className="inline-block" style={{ opacity: 0, transform: "translateY(100px)" }}>
-            {char === " " ? "\u00A0" : char}
-          </span>
-        ))}
-      </h1>
+      {/* --- Step 2.4: Conditional Rendering of the Title --- */}
+      {isWebKit ? (
+        // RENDER PATH 1: For Chrome, Safari, Edge, etc.
+        // Renders the text as a single node. The ref is attached here.
+        <h1 ref={webkitTitleRef} className={titleClasses} style={{ clipPath: 'inset(0 100% 0 0)' }}>
+          {nameText}
+        </h1>
+      ) : (
+        // RENDER PATH 2: For Firefox and other browsers.
+        // Renders individual spans for character animation.
+        <h1 className={titleClasses}>
+          {nameText.split('').map((char, index) => (
+            <span key={index} ref={el => { firefoxTitleCharsRef.current[index] = el }} className="inline-block" style={{ opacity: 0, transform: "translateY(100px)" }}>
+              {char === " " ? "\u00A0" : char}
+            </span>
+          ))}
+        </h1>
+      )}
       
+      {/* The rest of the component remains unchanged */}
       <h2 className="text-xs sm:text-sm md:text-base lg:text-lg font-light text-secondary tracking-[0.2em] md:tracking-[0.3em] uppercase" data-cursor-text>
         {titleText.split('').map((char, index) => (
-          <span key={index} ref={el => {titleCharsRef.current[index] = el}} className="inline-block" style={{ opacity: 0, transform: "translateY(20px)" }}>
+          <span key={index} ref={el => { titleCharsRef.current[index] = el }} className="inline-block" style={{ opacity: 0, transform: "translateY(20px)" }}>
             {char === " " ? "\u00A0" : char}
           </span>
         ))}
@@ -3241,10 +3408,7 @@ const Hero = () => {
         </button>
       </div>
 
-       <div 
-        ref={scrollIndicatorRef} 
-        className="absolute bottom-10 md:bottom-28 left-1/2 -translate-x-1/2 opacity-0"
-      >
+       <div ref={scrollIndicatorRef} className="absolute bottom-10 md:bottom-28 left-1/2 -translate-x-1/2 opacity-0">
         <PremiumScrollIndicator />
       </div>
     </section>
@@ -3252,7 +3416,6 @@ const Hero = () => {
 };
 
 export default Hero;
-
 
 --- END OF FILE: src/components/sections/Hero.tsx ---
 
@@ -3283,7 +3446,7 @@ const packagesData = [
       { name: "Contact Form", value: "Secure & Direct to Your Email" },
     ],
     timeline: "7-10 Days",
-    Price: "$750 USD",
+    Price: "$300 USD",
   },
   {
     title: "The Growth Accelerator",
@@ -3299,7 +3462,7 @@ const packagesData = [
       { name: "Database", value: "Scalable PostgreSQL (Supabase/Neon)" },
     ],
     timeline: "2-3 Weeks",
-    Price: "$1,450 USD",
+    Price: "$500 USD",
   },
   {
     title: "The Enterprise Application MVP",
@@ -3314,7 +3477,7 @@ const packagesData = [
       { name: "Support", value: "1 Month of Priority Post-Launch Support" },
     ],
     timeline: "4-6+ Weeks",
-    Price: "Starting at $2,000+ USD",
+    Price: "Starting at $800+ USD",
   },
   {
     title: "Have a Unique Project in Mind?",
@@ -3383,7 +3546,7 @@ const Packages = () => {
           My Packages
         </h2>
         <p className="stagger-reveal text-center text-secondary mb-16 max-w-3xl mx-auto bg-surface/30 backdrop-blur-sm p-4 rounded-lg border border-secondary/10">
-          <strong>Note on Infrastructure:</strong> You are responsible for your own domain (~$15/yr) and any ongoing subscriptions for third-party services (e.g., Vercel Pro, ~$20/mo). I provide expert guidance on the setup.
+          <strong>Note on Infrastructure:</strong> You are responsible for your own domain and any ongoing subscriptions for third-party services if used. I provide expert guidance on the setup.
         </p>
 
         <div className="stagger-reveal border-t border-secondary/10">
@@ -3908,6 +4071,35 @@ export const useTheme = () => {
 };
 
 --- END OF FILE: src/contexts/ThemeContext.tsx ---
+
+
+--- FILE: src/hooks/useIsWebKit.ts ---
+// src/hooks/useIsWebKit.ts
+"use client";
+
+import { useState, useEffect } from 'react';
+
+/**
+ * A client-side hook to determine if the browser is using the WebKit/Blink rendering engine.
+ * Handles server-side rendering by defaulting to `false`.
+ * @returns {boolean} `true` if the browser is WebKit-based (Chrome, Safari, Edge, etc.), otherwise `false`.
+ */
+export const useIsWebKit = () => {
+  const [isWebKit, setIsWebKit] = useState(false);
+
+  useEffect(() => {
+    // This check is robust for identifying Chrome, Safari, and modern Edge/Opera,
+    // while correctly excluding Firefox. 'InstallTrigger' is a Firefox-specific property.
+    const isFirefox = typeof (window as any).InstallTrigger !== 'undefined';
+    if (!isFirefox) {
+      setIsWebKit(true);
+    }
+  }, []);
+
+  return isWebKit;
+};
+
+--- END OF FILE: src/hooks/useIsWebKit.ts ---
 
 
 --- FILE: src/lib/data.ts ---

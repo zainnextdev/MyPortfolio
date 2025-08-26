@@ -1,4 +1,5 @@
-// src/components/core/HologramGlobeModel.tsx -- FINAL PRODUCTION VERSION
+// src/components/core/HologramGlobeModel.tsx -- MODIFIED
+
 "use client";
 
 import React, { useEffect } from 'react';
@@ -7,7 +8,8 @@ import { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
 
 export const HologramGlobeModel = React.forwardRef<THREE.Group, ThreeElements['group']>((props, ref) => {
-  const { scene, animations } = useGLTF('/hologram_globe.glb');
+  // UPDATED: The path now points to the new, compressed model.
+  const { scene, animations } = useGLTF('/hologram_globe_compressed.glb');
   const { actions } = useAnimations(animations, ref as React.RefObject<THREE.Group>);
 
   useEffect(() => {
@@ -21,7 +23,6 @@ export const HologramGlobeModel = React.forwardRef<THREE.Group, ThreeElements['g
     };
   }, [actions]);
   
-  // --- FIX: Raised the model on the Y-axis from 0 to 0.6 for a higher, more prominent position. ---
   return (
     <group ref={ref} {...props} dispose={null}>
       <primitive object={scene} scale={2.4} position={[0, 1.3, 0]} />
@@ -29,5 +30,6 @@ export const HologramGlobeModel = React.forwardRef<THREE.Group, ThreeElements['g
   );
 });
 
-useGLTF.preload('/hologram_globe.glb');
+// UPDATED: Preload the compressed model.
+useGLTF.preload('/hologram_globe_compressed.glb');
 HologramGlobeModel.displayName = 'HologramGlobeModel';

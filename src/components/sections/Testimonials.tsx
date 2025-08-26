@@ -1,3 +1,5 @@
+// src/components/sections/Testimonials.tsx -- MODIFIED WITH will-change
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
@@ -28,8 +30,6 @@ const Testimonials = () => {
         if (quoteEl) {
           const textElement = quoteEl.querySelector('.quote-text');
           if (textElement) {
-            // --- THE DEFINITIVE FIX FOR WORD WRAPPING ---
-            // Split by words first, then characters. This keeps words intact for line breaks.
             splitInstances.current[index] = new SplitType(textElement as HTMLElement, { types: 'words,chars' });
           }
         }
@@ -114,7 +114,8 @@ const Testimonials = () => {
           What My Clients Say
         </h2>
 
-        <div ref={containerRef} className="testimonial-card-container relative w-full p-6 sm:p-8 md:p-12 min-h-[450px] sm:min-h-[420px] md:min-h-[380px] rounded-xl border border-secondary/10 bg-surface/30 backdrop-blur-lg invisible" style={{ transformStyle: 'preserve-3d' }}>
+        {/* --- OPTIMIZATION APPLIED HERE --- */}
+        <div ref={containerRef} className="testimonial-card-container relative w-full p-6 sm:p-8 md:p-12 min-h-[450px] sm:min-h-[420px] md:min-h-[380px] rounded-xl border border-secondary/10 bg-surface/30 backdrop-blur-lg invisible will-change-transform" style={{ transformStyle: 'preserve-3d' }}>
           <Quote className="absolute top-6 sm:top-8 left-6 sm:left-8 text-secondary/10 w-16 h-16 sm:w-20 sm:h-20" strokeWidth={1} />
           
           {testimonialsData.map((testimonial, index) => (

@@ -97,7 +97,7 @@ export default function Contact() {
               </div>
             </div>
             <div className="contact-content-reveal">
-              <h3 className="text-3xl font-bold tracking-tight text-primary mb-4">Direct Lines</h3>
+              <h3 className="text-3xl font-bold tracking-tight text-primary mb-4">Contact Info</h3>
               <div className="p-6 bg-surface/50 backdrop-blur-lg border border-secondary/10 rounded-lg space-y-6">
                  <a href="mailto:zain.nextdev@gmail.com" className="group flex items-center gap-4 text-secondary hover:text-primary transition-colors duration-300" data-cursor-hover><Mail className="group-hover:text-accent transition-colors flex-shrink-0" size={24} /><span>zain.nextdev@gmail.com</span></a>
                  <a href="https://wa.me/923236748502" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 text-secondary hover:text-primary transition-colors duration-300" data-cursor-hover><Phone className="group-hover:text-accent transition-colors flex-shrink-0" size={24} /><span>+92 323 6748502</span></a>

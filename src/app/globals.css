@@ -69,3 +69,7 @@ html {
 .force-render-context {
   transform: translateZ(0);
 }
+
+.will-change-transform {
+  will-change: transform, opacity;
+}

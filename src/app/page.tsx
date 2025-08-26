@@ -1,23 +1,12 @@
-// src/app/page.tsx
+// src/app/page.tsx -- MODIFIED FOR SEMANTICS
 
-import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
-import Education from "@/components/sections/Education";
-import Projects from "@/components/sections/Projects";
-import Testimonials from "@/components/sections/Testimonials";
-import Packages from "@/components/sections/Packages"; // --- Step 1: Import the new component ---
-import Contact from "@/components/sections/Contact";
+import PageContent from "@/components/core/PageContent";
 
 export default function Home() {
+  // The <main> tag should wrap the primary content of the page.
   return (
     <main>
-      <Hero />
-      <About />
-      <Education />
-      <Projects />
-      <Testimonials /> 
-      <Packages /> {/* --- Step 2: Add the component to the page layout --- */}
-      <Contact />
+      <PageContent />
     </main>
   );
 }

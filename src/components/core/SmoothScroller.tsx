@@ -1,63 +1,59 @@
-// src/components/core/SmoothScroller.tsx
+// src/components/core/SmoothScroller.tsx -- MODIFIED FOR GSAP SYNC
+
 "use client";
 
 import { useEffect, useRef } from 'react';
 import Lenis from '@studio-freight/lenis';
 import { usePathname } from 'next/navigation';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// --- Singleton instance of Lenis ---
 let lenis: Lenis | null = null;
 
-// --- Control functions that other components can import and use ---
 export const stopLenis = () => lenis?.stop();
 export const startLenis = () => lenis?.start();
 
 const SmoothScroller = () => {
   const pathname = usePathname();
-  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // Register the ScrollTrigger plugin
+    gsap.registerPlugin(ScrollTrigger);
+
     if (lenis) {
-      // If an instance already exists, destroy it to prevent duplicates.
-      // This can happen in React's strict mode in development.
       lenis.destroy();
     }
 
-    // --- RE-ENGINEERED "EXPENSIVE" SETTINGS ---
     lenis = new Lenis({
-      duration: 2.0,      // Longer duration for a more cinematic feel on programmatic scrolls
-      lerp: 0.06,         // Lower lerp for a heavier, more physical "drag"
-      wheelMultiplier: 1.1, // Slightly increases mouse wheel sensitivity for responsiveness
-      syncTouch: true,      // Improves touch-based scrolling synchronization
+      duration: 2.0,
+      lerp: 0.06,
+      wheelMultiplier: 1.1,
+      syncTouch: true,
     });
 
-    lenisRef.current = lenis;
-
-    const raf = (time: number) => {
-      lenis?.raf(time);
-      requestAnimationFrame(raf);
-    };
+    // --- THE CRITICAL SYNCHRONIZATION LOGIC ---
+    // This is the magic. On every frame Lenis updates ("raf"), we do two things:
+    // 1. We tell ScrollTrigger the new scroll position from Lenis.
+    // 2. We use GSAP's ticker to drive Lenis's animation loop, ensuring
+    //    both systems are running on the exact same clock.
+    lenis.on('scroll', ScrollTrigger.update);
     
-    requestAnimationFrame(raf);
-
-    // --- INTEGRATION: Set CSS variable for cursor and other components to use ---
-    lenis.on('scroll', (e: { velocity: number; isScrolling: boolean }) => {
-      document.documentElement.style.setProperty('--scroll-velocity', e.velocity.toString());
-      if (e.isScrolling) {
-        document.body.classList.add('is-scrolling');
-      } else {
-        document.body.classList.remove('is-scrolling');
-      }
+    gsap.ticker.add((time) => {
+      lenis?.raf(time * 1000); // Lenis expects milliseconds
     });
+    
+    gsap.ticker.lagSmoothing(0);
+    // --- END OF SYNCHRONIZATION LOGIC ---
 
     return () => {
+      // Clean up GSAP ticker and Lenis instance
+      gsap.ticker.remove(lenis!.raf);
       lenis?.destroy();
       lenis = null;
     };
   }, []);
 
   useEffect(() => {
-    // Scroll to top on route change
     window.scrollTo(0, 0);
   }, [pathname]);
 

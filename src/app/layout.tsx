@@ -1,18 +1,17 @@
-// src/app/layout.tsx
+// src/app/layout.tsx -- FINAL, FULLY UPDATED & OPTIMIZED
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { ResumeViewerProvider } from "@/contexts/ResumeViewerContext"; 
-import CustomCursor from "@/components/core/CustomCursor";
 import SmoothScroller from "@/components/core/SmoothScroller";
-import { CelestialCanvas } from "@/components/core/CelestialCanvas"; 
 import Navbar from "@/components/core/Navbar";
 import { Toaster } from "react-hot-toast";
 import CommandPalette from "@/components/core/CommandPalette";
 import Footer from "@/components/core/Footer";
 import Header from "@/components/core/Header";
+import ClientEffectsWrapper from "@/components/core/ClientEffectsWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,15 +30,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Zain Khalid", url: liveUrl }],
   creator: "Zain Khalid",
   
-  // --- START OF ELITE VERIFICATION INTEGRATION ---
-  /**
-   * Instructs Google to verify ownership of this site.
-   * This is the professional Next.js method for adding the verification meta tag.
-   */
+  // Google Site Verification
   verification: {
     google: 'HwbZ9SEhNLkYaoxLskIGB11QX6tvZ5Ob3PawkTqGkLU',
   },
-  // --- END OF ELITE VERIFICATION INTEGRATION ---
 
   // Canonical URL & Robots
   metadataBase: new URL(liveUrl),
@@ -58,7 +52,7 @@ export const metadata: Metadata = {
     },
   },
   
-  // Open Graph & Twitter Cards... (rest of the metadata object is unchanged)
+  // Open Graph & Twitter Cards for social sharing
   openGraph: {
     title: "Zain Khalid | Full-Stack Architect & Next.js Specialist",
     description: "Architecting high-performance, visually stunning web experiences.",
@@ -79,34 +73,49 @@ export const metadata: Metadata = {
   manifest: `${liveUrl}/site.webmanifest`,
 };
 
-// --- ELITE STRUCTURED DATA (JSON-LD) ---
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Zain Khalid',
-  url: liveUrl,
-  image: `${liveUrl}/zain-khalid-portrait.png`, // IMPORTANT: Add a professional headshot to your /public folder with this name
-  jobTitle: 'Full-Stack Architect & Next.js Specialist',
-  worksFor: {
-    '@type': 'Organization',
-    name: 'Freelance',
+// --- ENHANCED STRUCTURED DATA (JSON-LD) ---
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Zain Khalid',
+    url: liveUrl,
+    image: `${liveUrl}/zain-khalid-portrait.png`,
+    jobTitle: 'Full-Stack Architect & Next.js Specialist',
+    worksFor: {
+      '@type': 'Organization',
+      name: 'Freelance',
+    },
+    alumniOf: [
+      { '@type': 'CollegeOrUniversity', name: 'University of Engineering & Technology, Lahore' },
+      { '@type': 'CollegeOrUniversity', name: 'Punjab Group of Colleges, Lahore' }
+    ],
+    sameAs: [
+      'https://github.com/zainnextdev',
+      'https://www.linkedin.com/in/zain-khalid-dev/',
+    ],
+    knowsAbout: [ "Next.js", "React.js", "TypeScript", "PostgreSQL", "Supabase", "Vercel", "System Architecture", "UI/UX Design", "SEO", "Three.js", "GSAP" ],
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Lahore',
+      addressCountry: 'PK',
+    },
   },
-  alumniOf: [
-    { '@type': 'CollegeOrUniversity', name: 'University of Engineering & Technology, Lahore' },
-    { '@type': 'CollegeOrUniversity', name: 'Punjab Group of Colleges, Lahore' }
-  ],
-  sameAs: [ // Your social/professional links
-    'https://github.com/zainnextdev',
-    'https://www.linkedin.com/in/zain-khalid-b91873318/',
-    // Add other relevant links like your Twitter profile URL
-  ],
-  knowsAbout: [ "Next.js", "React.js", "TypeScript", "PostgreSQL", "Supabase", "Vercel", "System Architecture", "UI/UX Design", "SEO", "Three.js", "GSAP" ],
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Lahore',
-    addressCountry: 'PK',
-  },
-};
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    url: liveUrl,
+    name: 'Zain Khalid | Full-Stack Architect',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${liveUrl}/?s={search_term_string}`
+      },
+      'query-input': 'required name=search_term_string'
+    }
+  }
+];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -120,16 +129,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.className} bg-background text-primary antialiased`}>
         <ThemeProvider>
           <ResumeViewerProvider>
+            <ClientEffectsWrapper />
             <Toaster position="bottom-center" toastOptions={{ style: { background: '#111111', color: '#EAEAEA', border: '1px solid rgba(136, 136, 136, 0.2)', }, }} />
-            <CelestialCanvas />
-            <CustomCursor />
             <Navbar />
             <Header /> 
             <SmoothScroller />
             <div className="scroll-container">
-              <main className="pt-20 md:pt-20 md:pl-20">
-                {children}
-              </main>
+              {/* The <main> tag is now correctly located in src/app/page.tsx */}
+              {children}
               <Footer />
             </div>
             <CommandPalette />

@@ -1,3 +1,5 @@
+// src/components/sections/Projects.tsx -- MODIFIED WITH will-change
+
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -18,7 +20,6 @@ const Projects = () => {
 
   const activeProject = projectsData[activeIndex];
 
-  // Section entry animation
   useEffect(() => {
     const ctx = gsap.context(() => {
         const tl = gsap.timeline({
@@ -34,25 +35,20 @@ const Projects = () => {
     return () => ctx.revert();
   }, []);
   
-  // Animation for project transitions (IN)
   useEffect(() => {
     if (!detailsContainerRef.current || !imageContainerRef.current) return;
-
     const textElements = gsap.utils.toArray(detailsContainerRef.current.querySelectorAll('.animate-in'));
-    
     gsap.set(textElements, { y: 30, opacity: 0 });
     gsap.set(imageContainerRef.current, { opacity: 0, scale: 0.98 });
 
     const tl = gsap.timeline({ onComplete: () => setIsAnimating(false) });
     tl.to(imageContainerRef.current, { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' })
       .to(textElements, { y: 0, opacity: 1, stagger: 0.08, duration: 0.5, ease: 'power3.out' }, "-=0.4");
-      
   }, [activeIndex]);
 
   const handleNavigation = (direction: 'next' | 'prev') => {
     if (isAnimating) return;
     if (!detailsContainerRef.current || !imageContainerRef.current) return;
-
     setIsAnimating(true);
 
     const newIndex = direction === 'next'
@@ -69,14 +65,12 @@ const Projects = () => {
   return (
     <section id="projects" ref={sectionRef} className="relative min-h-screen py-32 px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center overflow-hidden">
       <div className="w-full max-w-7xl flex flex-col items-center">
-        {/* --- MOBILE ADAPTATION: Responsive bottom margin --- */}
         <h2 className="project-title-reveal text-4xl md:text-5xl font-bold tracking-tighter text-center mb-16 md:mb-20 invisible" data-cursor-text>
           Curated Work
         </h2>
-
-        {/* --- MOBILE ADAPTATION: Responsive grid gap --- */}
         <div className="project-content-reveal grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center w-full invisible">
-          <div ref={imageContainerRef} className="relative h-[250px] sm:h-[350px] md:h-[500px] w-full">
+          {/* --- OPTIMIZATION APPLIED HERE --- */}
+          <div ref={imageContainerRef} className="relative h-[250px] sm:h-[350px] md:h-[500px] w-full will-change-transform">
             <PremiumImageDisplay
               key={activeProject.id}
               imageUrl={activeProject.image}
@@ -84,9 +78,9 @@ const Projects = () => {
             />
           </div>
           
-          <div ref={detailsContainerRef} className="flex flex-col justify-center">
+          {/* --- OPTIMIZATION APPLIED HERE --- */}
+          <div ref={detailsContainerRef} className="flex flex-col justify-center will-change-transform">
             <div>
-               {/* --- MOBILE ADAPTATION: Responsive font size --- */}
               <h3 className="animate-in text-2xl sm:text-3xl font-bold tracking-tight text-primary mb-3" data-cursor-text>{activeProject.title}</h3>
               <p className="animate-in text-accent font-semibold tracking-wide mb-6">{activeProject.tagline}</p>
               <p className="animate-in text-secondary leading-relaxed mb-8">{activeProject.description}</p>
