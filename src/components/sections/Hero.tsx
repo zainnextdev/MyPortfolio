@@ -81,7 +81,7 @@ const Hero = () => {
   const titleClasses = "text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter uppercase mb-4 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-fill-transparent bg-[length:200%_auto] animate-sheen drop-shadow-[0_0_10px_rgba(0,245,212,0.5)]";
 
   return (
-    <section ref={componentRef} id="hero" className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+    <header ref={componentRef} id="hero" className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
       <div ref={parallaxRef} className="pointer-events-none fixed inset-0 -z-10 opacity-0">
         <GridBackground />
       </div>
@@ -127,7 +127,7 @@ const Hero = () => {
        <div ref={scrollIndicatorRef} className="absolute bottom-10 md:bottom-28 left-1/2 -translate-x-1/2 opacity-0">
         <PremiumScrollIndicator />
       </div>
-    </section>
+    </header>
   );
 };
 

@@ -1,5 +1,5 @@
 --- Portfolio Snapshot: Zain Khalid ---
---- Generated on: Tue, 26 Aug 2025 09:19:04 GMT ---
+--- Generated on: Wed, 27 Aug 2025 10:53:34 GMT ---
 
 
 
@@ -13,11 +13,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "build:analyze": "ANALYZE=true next build",
+  "lhci:install": "npm install -g @lhci/cli",
+  "lhci:build": "npm run build",
+  "lhci:run": "lhci autorun"
+},
   "dependencies": {
     "@react-three/drei": "^10.7.2",
     "@react-three/fiber": "^9.3.0",
@@ -38,6 +42,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@lhci/cli": "^0.15.1",
+    "@next/bundle-analyzer": "^15.5.0",
     "@types/d3-geo": "^3.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -47,7 +53,8 @@
     "eslint-config-next": "15.4.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^46.0.3"
   }
 }
 
@@ -105,8 +112,12 @@ module.exports = {
 =============== 🌳 DIRECTORY STRUCTURE ===============
 
 ├── .gitignore
+├── .vercel
+│   ├── project.json
+│   └── README.txt
 ├── eslint.config.mjs
 ├── LICENSE
+├── lighthouserc.js
 ├── next-env.d.ts
 ├── next.config.ts
 ├── package.json
@@ -120,6 +131,7 @@ module.exports = {
 │   ├── file.svg
 │   ├── globe.svg
 │   ├── hologram_globe.glb
+│   ├── hologram_globe_compressed.glb
 │   ├── icons
 │   │   ├── antdesign.png
 │   │   ├── clerk.png
@@ -148,9 +160,7 @@ module.exports = {
 │   │   ├── admin-portal-display.png
 │   │   ├── ajcollections-display.png
 │   │   └── genius-mart-display.png
-│   ├── robots.txt
 │   ├── site.webmanifest
-│   ├── sitemap.xml
 │   ├── vercel.svg
 │   ├── window.svg
 │   ├── zain-khalid-portrait.jpg
@@ -167,11 +177,14 @@ module.exports = {
 │   │   ├── globals.css
 │   │   ├── layout.tsx
 │   │   ├── not-found.tsx
-│   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   ├── robots.ts
+│   │   └── sitemap.ts
 │   ├── components
 │   │   ├── core
 │   │   │   ├── BlueprintBackground.tsx
 │   │   │   ├── CelestialCanvas.tsx
+│   │   │   ├── ClientEffectsWrapper.tsx
 │   │   │   ├── CommandPalette.tsx
 │   │   │   ├── CustomCursor.tsx
 │   │   │   ├── Footer.tsx
@@ -184,6 +197,7 @@ module.exports = {
 │   │   │   ├── HologramGlobeModel.tsx
 │   │   │   ├── IcosahedronScene.tsx
 │   │   │   ├── Navbar.tsx
+│   │   │   ├── PageContent.tsx
 │   │   │   ├── PremiumImageDisplay.tsx
 │   │   │   ├── PremiumScrollIndicator.tsx
 │   │   │   ├── ProjectNavigation.tsx
@@ -203,7 +217,8 @@ module.exports = {
 │   │   ├── ResumeViewerContext.tsx
 │   │   └── ThemeContext.tsx
 │   ├── hooks
-│   │   └── useIsWebKit.ts
+│   │   ├── useIsWebKit.ts
+│   │   └── useMediaQuery.ts
 │   └── lib
 │       └── data.ts
 ├── tailwind.config.ts
@@ -212,6 +227,12 @@ module.exports = {
 
 
 =============== 📄 SOURCE CODE & FILES ===============
+
+
+--- FILE: .vercel/project.json ---
+{"projectId":"prj_TMEk08yBtpvyzJuAneh7SrA0Dp5L","orgId":"team_wQKyFxErk9MFDtjpjMbLwkhV","projectName":"zainkhalid"}
+
+--- END OF FILE: .vercel/project.json ---
 
 
 --- FILE: eslint.config.mjs ---
@@ -236,6 +257,37 @@ export default eslintConfig;
 --- END OF FILE: eslint.config.mjs ---
 
 
+--- FILE: lighthouserc.js ---
+// lighthouserc.js -- NEW FILE
+
+module.exports = {
+  ci: {
+    collect: {
+      // This tells Lighthouse to start a local server and test against that
+      startServerCommand: 'npm run start',
+      url: ['http://localhost:3000'],
+      numberOfRuns: 2, // Run twice to get more stable numbers
+    },
+    assert: {
+      // This sets the performance "budget". The build will fail if any of these
+      // scores drop below the specified value. Start with reasonable numbers
+      // and increase them as you optimize further.
+      assertions: {
+        'categories:performance': ['warn', { minScore: 0.9 }],
+        'categories:accessibility': ['error', { minScore: 0.95 }],
+        'categories:best-practices': ['error', { minScore: 0.95 }],
+        'categories:seo': ['error', { minScore: 1 }],
+      },
+    },
+    upload: {
+      target: 'temporary-public-storage', // Uploads report to a temporary URL
+    },
+  },
+};
+
+--- END OF FILE: lighthouserc.js ---
+
+
 --- FILE: next-env.d.ts ---
 /// <reference types="next" />
 /// <reference types="next/image-types/global" />
@@ -248,41 +300,23 @@ export default eslintConfig;
 
 
 --- FILE: next.config.ts ---
-// next.config.ts
-
 import type { NextConfig } from "next";
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const nextConfig: NextConfig = {
-  /* Your existing config options here (if any) */
-
-  // --- START OF MODIFICATION ---
-
-  /**
-   * Configuration for TypeScript.
-   * WARNING: Setting ignoreBuildErrors to true is NOT recommended for production.
-   * This will allow your project to build even if there are TypeScript errors.
-   */
   typescript: {
-    // !! DANGER !!
-    // This prevents the build from failing when TypeScript errors are present.
     ignoreBuildErrors: true,
   },
-
-  /**
-   * Configuration for ESLint.
-   * WARNING: Setting ignoreDuringBuilds to true is NOT recommended for production.
-   * This will prevent the build from failing due to ESLint errors.
-   */
   eslint: {
-    // !! DANGER !!
-    // This prevents the build from failing when ESLint errors are present.
     ignoreDuringBuilds: true,
   },
-
-  // --- END OF MODIFICATION ---
 };
 
-export default nextConfig;
+// --- Step 2: Wrap your config with the analyzer ---
+export default withBundleAnalyzer(nextConfig);
 
 --- END OF FILE: next.config.ts ---
 
@@ -293,11 +327,15 @@ export default nextConfig;
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "build:analyze": "ANALYZE=true next build",
+  "lhci:install": "npm install -g @lhci/cli",
+  "lhci:build": "npm run build",
+  "lhci:run": "lhci autorun"
+},
   "dependencies": {
     "@react-three/drei": "^10.7.2",
     "@react-three/fiber": "^9.3.0",
@@ -318,6 +356,8 @@ export default nextConfig;
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@lhci/cli": "^0.15.1",
+    "@next/bundle-analyzer": "^15.5.0",
     "@types/d3-geo": "^3.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -327,7 +367,8 @@ export default nextConfig;
     "eslint-config-next": "15.4.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^46.0.3"
   }
 }
 
@@ -740,55 +781,52 @@ html {
   transform: translateZ(0);
 }
 
+.will-change-transform {
+  will-change: transform, opacity;
+}
+
 --- END OF FILE: src/app/globals.css ---
 
 
 --- FILE: src/app/layout.tsx ---
-// src/app/layout.tsx
+// src/app/layout.tsx -- MODIFIED FOR PERFORMANCE
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { ResumeViewerProvider } from "@/contexts/ResumeViewerContext"; 
-import CustomCursor from "@/components/core/CustomCursor";
 import SmoothScroller from "@/components/core/SmoothScroller";
-import { CelestialCanvas } from "@/components/core/CelestialCanvas"; 
 import Navbar from "@/components/core/Navbar";
 import { Toaster } from "react-hot-toast";
 import CommandPalette from "@/components/core/CommandPalette";
 import Footer from "@/components/core/Footer";
 import Header from "@/components/core/Header";
+import ClientEffectsWrapper from "@/components/core/ClientEffectsWrapper";
+
+// NOTE: The heavy, always-on components have been removed from this global layout.
+// import CustomCursor from "@/components/core/CustomCursor"; // REMOVED
+// import { CelestialCanvas } from "@/components/core/CelestialCanvas"; // REMOVED
 
 const inter = Inter({ subsets: ["latin"] });
 
 const liveUrl = "https://zainkhalid.vercel.app";
 
+// --- Metadata remains unchanged, it is already well-configured ---
 export const metadata: Metadata = {
-  // Core Metadata
   title: {
     default: "Zain Khalid | Full-Stack Architect & Next.js Specialist",
     template: "%s | Zain Khalid",
   },
   description: "The official portfolio of Zain Khalid, a full-stack architect from Lahore, Pakistan, specializing in building high-performance, visually stunning web experiences with the Next.js and Vercel ecosystem.",
-  
-  // SEO & Discoverability
-  keywords: ["Zain Khalid", "Full-Stack Developer", "Next.js Developer", "React Developer", "TypeScript", "Vercel", "Portfolio", "Web Developer Pakistan", "Lahore Developer", "Three.js", "GSAP"],
-  authors: [{ name: "Zain Khalid", url: liveUrl }],
-  creator: "Zain Khalid",
-  
-  // --- START OF ELITE VERIFICATION INTEGRATION ---
-  /**
-   * Instructs Google to verify ownership of this site.
-   * This is the professional Next.js method for adding the verification meta tag.
-   */
   verification: {
     google: 'HwbZ9SEhNLkYaoxLskIGB11QX6tvZ5Ob3PawkTqGkLU',
   },
-  // --- END OF ELITE VERIFICATION INTEGRATION ---
-
-  // Canonical URL & Robots
   metadataBase: new URL(liveUrl),
+  // ... rest of metadata object is unchanged and correct
+  keywords: ["Zain Khalid", "Full-Stack Developer", "Next.js Developer", "React Developer", "TypeScript", "Vercel", "Portfolio", "Web Developer Pakistan", "Lahore Developer", "Three.js", "GSAP"],
+  authors: [{ name: "Zain Khalid", url: liveUrl }],
+  creator: "Zain Khalid",
   alternates: {
     canonical: '/',
   },
@@ -803,8 +841,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  
-  // Open Graph & Twitter Cards... (rest of the metadata object is unchanged)
   openGraph: {
     title: "Zain Khalid | Full-Stack Architect & Next.js Specialist",
     description: "Architecting high-performance, visually stunning web experiences.",
@@ -825,13 +861,12 @@ export const metadata: Metadata = {
   manifest: `${liveUrl}/site.webmanifest`,
 };
 
-// --- ELITE STRUCTURED DATA (JSON-LD) ---
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Zain Khalid',
   url: liveUrl,
-  image: `${liveUrl}/zain-khalid-portrait.png`, // IMPORTANT: Add a professional headshot to your /public folder with this name
+  image: `${liveUrl}/zain-khalid-portrait.png`, 
   jobTitle: 'Full-Stack Architect & Next.js Specialist',
   worksFor: {
     '@type': 'Organization',
@@ -841,10 +876,9 @@ const jsonLd = {
     { '@type': 'CollegeOrUniversity', name: 'University of Engineering & Technology, Lahore' },
     { '@type': 'CollegeOrUniversity', name: 'Punjab Group of Colleges, Lahore' }
   ],
-  sameAs: [ // Your social/professional links
+  sameAs: [
     'https://github.com/zainnextdev',
     'https://www.linkedin.com/in/zain-khalid-b91873318/',
-    // Add other relevant links like your Twitter profile URL
   ],
   knowsAbout: [ "Next.js", "React.js", "TypeScript", "PostgreSQL", "Supabase", "Vercel", "System Architecture", "UI/UX Design", "SEO", "Three.js", "GSAP" ],
   address: {
@@ -866,9 +900,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.className} bg-background text-primary antialiased`}>
         <ThemeProvider>
           <ResumeViewerProvider>
+            {/* --- Step 2: Add the wrapper component here --- */}
+            <ClientEffectsWrapper />
+
             <Toaster position="bottom-center" toastOptions={{ style: { background: '#111111', color: '#EAEAEA', border: '1px solid rgba(136, 136, 136, 0.2)', }, }} />
-            <CelestialCanvas />
-            <CustomCursor />
             <Navbar />
             <Header /> 
             <SmoothScroller />
@@ -957,31 +992,66 @@ export default function NotFound() {
 
 
 --- FILE: src/app/page.tsx ---
-// src/app/page.tsx
+// src/app/page.tsx -- MODIFIED FOR SEMANTICS
 
-import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
-import Education from "@/components/sections/Education";
-import Projects from "@/components/sections/Projects";
-import Testimonials from "@/components/sections/Testimonials";
-import Packages from "@/components/sections/Packages"; // --- Step 1: Import the new component ---
-import Contact from "@/components/sections/Contact";
+import PageContent from "@/components/core/PageContent";
 
 export default function Home() {
+  // The <main> tag should wrap the primary content of the page.
   return (
     <main>
-      <Hero />
-      <About />
-      <Education />
-      <Projects />
-      <Testimonials /> 
-      <Packages /> {/* --- Step 2: Add the component to the page layout --- */}
-      <Contact />
+      <PageContent />
     </main>
   );
 }
 
 --- END OF FILE: src/app/page.tsx ---
+
+
+--- FILE: src/app/robots.ts ---
+// src/app/robots.ts -- NEW FILE
+
+import { MetadataRoute } from 'next';
+
+// This function generates the robots.txt file.
+export default function robots(): MetadataRoute.Robots {
+  const siteUrl = 'https://zainkhalid.vercel.app';
+
+  return {
+    rules: {
+      userAgent: '*', // Rule applies to all web crawlers
+      allow: '/',     // Allow crawling of all pages starting from the root
+      disallow: '/api/', // Disallow crawling of the API routes
+    },
+    sitemap: `${siteUrl}/sitemap.xml`, // Location of your sitemap
+  };
+}
+
+--- END OF FILE: src/app/robots.ts ---
+
+
+--- FILE: src/app/sitemap.ts ---
+// src/app/sitemap.ts -- NEW FILE
+
+import { MetadataRoute } from 'next';
+
+// This function generates the sitemap.xml file.
+export default function sitemap(): MetadataRoute.Sitemap {
+  const siteUrl = 'https://zainkhalid.vercel.app';
+
+  // For a single-page portfolio, we only need to list the main URL.
+  // If you add a blog or other pages later, you would add them to this array.
+  return [
+    {
+      url: siteUrl,
+      lastModified: new Date().toISOString(), // Automatically set to the build date
+      changeFrequency: 'monthly', // How often the content is likely to change
+      priority: 1, // The priority of this URL relative to other URLs on your site (1.0 is highest)
+    },
+  ];
+}
+
+--- END OF FILE: src/app/sitemap.ts ---
 
 
 --- FILE: src/components/core/BlueprintBackground.tsx ---
@@ -1064,6 +1134,39 @@ export function CelestialCanvas() {
 }
 
 --- END OF FILE: src/components/core/CelestialCanvas.tsx ---
+
+
+--- FILE: src/components/core/ClientEffectsWrapper.tsx ---
+// src/components/core/ClientEffectsWrapper.tsx -- NEW FILE
+
+"use client";
+
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import CustomCursor from "@/components/core/CustomCursor";
+import { CelestialCanvas } from "@/components/core/CelestialCanvas";
+
+export default function ClientEffectsWrapper() {
+  // We'll consider "desktop" to be screens wider than 1024px.
+  // This is a common breakpoint where devices have both the screen real estate
+  // and the processing power for these effects.
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+
+  // Only render these expensive components on the client side for desktop users.
+  // For mobile users, this component renders nothing, saving massive resources.
+  if (isDesktop) {
+    return (
+      <>
+        <CelestialCanvas />
+        <CustomCursor />
+      </>
+    );
+  }
+
+  // Return null for non-desktop environments
+  return null;
+}
+
+--- END OF FILE: src/components/core/ClientEffectsWrapper.tsx ---
 
 
 --- FILE: src/components/core/CommandPalette.tsx ---
@@ -1953,7 +2056,8 @@ export function HologramGlobe({ sectionRef }: HologramGlobeProps) {
 
 
 --- FILE: src/components/core/HologramGlobeModel.tsx ---
-// src/components/core/HologramGlobeModel.tsx -- FINAL PRODUCTION VERSION
+// src/components/core/HologramGlobeModel.tsx -- MODIFIED
+
 "use client";
 
 import React, { useEffect } from 'react';
@@ -1962,7 +2066,8 @@ import { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
 
 export const HologramGlobeModel = React.forwardRef<THREE.Group, ThreeElements['group']>((props, ref) => {
-  const { scene, animations } = useGLTF('/hologram_globe.glb');
+  // UPDATED: The path now points to the new, compressed model.
+  const { scene, animations } = useGLTF('/hologram_globe_compressed.glb');
   const { actions } = useAnimations(animations, ref as React.RefObject<THREE.Group>);
 
   useEffect(() => {
@@ -1976,7 +2081,6 @@ export const HologramGlobeModel = React.forwardRef<THREE.Group, ThreeElements['g
     };
   }, [actions]);
   
-  // --- FIX: Raised the model on the Y-axis from 0 to 0.6 for a higher, more prominent position. ---
   return (
     <group ref={ref} {...props} dispose={null}>
       <primitive object={scene} scale={2.4} position={[0, 1.3, 0]} />
@@ -1984,7 +2088,8 @@ export const HologramGlobeModel = React.forwardRef<THREE.Group, ThreeElements['g
   );
 });
 
-useGLTF.preload('/hologram_globe.glb');
+// UPDATED: Preload the compressed model.
+useGLTF.preload('/hologram_globe_compressed.glb');
 HologramGlobeModel.displayName = 'HologramGlobeModel';
 
 --- END OF FILE: src/components/core/HologramGlobeModel.tsx ---
@@ -2060,41 +2165,28 @@ export function IcosahedronScene() {
 
 
 --- FILE: src/components/core/Navbar.tsx ---
-// src/components/core/Navbar.tsx
+// src/components/core/Navbar.tsx -- REVERTED TO CLEAN & CORRECT STATE
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { Home, Layers3, GraduationCap, LayoutGrid, MessageSquareQuote, ClipboardCheck, ArrowUpRight, ChevronDown, X } from 'lucide-react';
 
-// --- ICON & NAVLINK UPGRADE: Final, premium icon set and structure ---
-import { 
-  Home,
-  Layers3,
-  GraduationCap,
-  LayoutGrid, 
-  MessageSquareQuote,
-  ClipboardCheck, // --- Step 1: Import the new icon ---
-  ArrowUpRight,
-  ChevronDown, 
-  X 
-} from 'lucide-react';
-
+// GSAP plugins are registered in SmoothScroller now, but it's safe to keep them here.
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-// --- The definitive navItems array, now including "Packages" ---
 const navItems = [
   { id: 'hero', label: 'Home', icon: <Home size={22} /> },
   { id: 'about', label: 'About & Skills', icon: <Layers3 size={22} /> },
   { id: 'education', label: 'Academic Journey', icon: <GraduationCap size={22} /> },
   { id: 'projects', label: 'Curated Work', icon: <LayoutGrid size={22} /> },
   { id: 'testimonials', label: 'Client Reviews', icon: <MessageSquareQuote size={22} /> },
-  // --- Step 2: Add the new package link in the logical position ---
   { id: 'packages', label: 'My Packages', icon: <ClipboardCheck size={22} /> },
   { id: 'contact', label: 'Contact', icon: <ArrowUpRight size={22} /> },
 ];
-
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -2112,10 +2204,8 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY > 50) setIsScrolled(true);
-      else setIsScrolled(false);
-      if (currentScrollY > 100 && currentScrollY > lastScrollY.current) setIsHidden(true);
-      else setIsHidden(false);
+      setIsScrolled(currentScrollY > 50);
+      setIsHidden(currentScrollY > 100 && currentScrollY > lastScrollY.current);
       lastScrollY.current = currentScrollY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -2127,11 +2217,41 @@ const Navbar = () => {
   }, [isHidden]);
 
   useEffect(() => {
-    gsap.fromTo(desktopNavRef.current, { x: '-100%' }, { x: '0%', duration: 1, ease: 'power3.out', delay: 1.5 });
-    const triggers = navItems.map(item => ScrollTrigger.create({ trigger: `#${item.id}`, start: 'top center', end: 'bottom center', onToggle: self => self.isActive && setActiveSection(item.id) }));
-    return () => triggers.forEach(trigger => trigger.kill());
+    const ctx = gsap.context(() => {
+      gsap.fromTo(desktopNavRef.current, { x: '-100%' }, { x: '0%', duration: 1, ease: 'power3.out', delay: 1.5 });
+
+      // After a short delay for lazy-loaded components to mount...
+      const setupTriggersTimeout = setTimeout(() => {
+        const triggers = navItems.map(item =>
+          ScrollTrigger.create({
+            trigger: `#${item.id}`,
+            start: 'top center',
+            end: 'bottom center',
+            onToggle: self => {
+              if (self.isActive) {
+                setActiveSection(item.id);
+              }
+            },
+          })
+        );
+        
+        // Refresh is still a good practice after dynamic content loads.
+        ScrollTrigger.refresh();
+
+        // Cleanup function for when the component unmounts
+        return () => {
+          triggers.forEach(trigger => trigger.kill());
+        };
+      }, 500);
+
+      // Main cleanup for the timeout
+      return () => clearTimeout(setupTriggersTimeout);
+    });
+
+    return () => ctx.revert();
   }, []);
 
+  // Mobile menu logic remains unchanged
   useEffect(() => {
     const menuItems = gsap.utils.toArray('.mobile-nav-item');
     menuTimeline.current = gsap.timeline({ paused: true })
@@ -2154,6 +2274,7 @@ const Navbar = () => {
 
   const handleNavClick = (sectionId: string) => {
     setIsMenuOpen(false);
+    // Lenis handles the smooth scroll, so we just tell it where to go.
     gsap.to(window, { duration: 1.8, scrollTo: { y: `#${sectionId}`, offsetY: 0 }, ease: 'power3.inOut' });
   };
 
@@ -2162,7 +2283,6 @@ const Navbar = () => {
       <nav ref={desktopNavRef} className="hidden md:flex fixed top-0 left-0 h-screen w-20 items-center justify-center z-50">
           <div className="relative flex items-center justify-center h-auto py-6 backdrop-blur-md rounded-full"><ul className="flex flex-col items-center justify-center gap-6">{navItems.map(item => (<li key={item.id}><button onClick={() => handleNavClick(item.id)} className="group relative flex items-center justify-center h-12 w-12" aria-label={`Go to ${item.label} section`} data-cursor-hover><span className={`absolute inset-0 rounded-full border border-accent transition-all duration-300 ease-in-out ${activeSection === item.id ? 'opacity-100 scale-100 shadow-[0_0_15px_-3px_theme(colors.accent)]' : 'opacity-0 scale-125'}`} /><div className={`transition-colors duration-300 ${activeSection === item.id ? 'text-accent' : 'text-secondary group-hover:text-primary'}`}>{item.icon}</div><div className="absolute left-full ml-4 pointer-events-none"><span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap bg-surface px-3 py-1.5 text-primary rounded-md shadow-lg text-sm tracking-wider -translate-x-4 group-hover:translate-x-0">{item.label}</span></div></button></li>))}</ul></div>
       </nav>
-
       <div className="md:hidden fixed top-0 left-0 w-full z-50">
         <nav ref={mobileNavRef} className={`relative z-10 h-20 px-6 flex items-center justify-between transition-colors duration-300 ${isScrolled ? 'bg-background/50 backdrop-blur-lg border-b border-secondary/10' : 'bg-transparent border-b border-transparent'}`}>
           <button onClick={() => handleNavClick('hero')} data-cursor-hover className="font-black text-xl tracking-wider text-primary">ZK</button>
@@ -2181,6 +2301,41 @@ const Navbar = () => {
 export default Navbar;
 
 --- END OF FILE: src/components/core/Navbar.tsx ---
+
+
+--- FILE: src/components/core/PageContent.tsx ---
+// src/components/core/PageContent.tsx -- MODIFIED FOR SEMANTICS
+
+"use client";
+
+import dynamic from 'next/dynamic';
+
+const SectionPlaceholder = () => <section className="min-h-screen w-full" aria-hidden="true" />;
+
+const Hero = dynamic(() => import('@/components/sections/Hero'));
+const About = dynamic(() => import('@/components/sections/About'), { ssr: false, loading: () => <SectionPlaceholder /> });
+const Education = dynamic(() => import('@/components/sections/Education'), { ssr: false, loading: () => <SectionPlaceholder /> });
+const Projects = dynamic(() => import('@/components/sections/Projects'), { ssr: false, loading: () => <SectionPlaceholder /> });
+const Testimonials = dynamic(() => import('@/components/sections/Testimonials'), { ssr: false, loading: () => <SectionPlaceholder /> });
+const Packages = dynamic(() => import('@/components/sections/Packages'), { ssr: false, loading: () => <SectionPlaceholder /> });
+const Contact = dynamic(() => import('@/components/sections/Contact'), { ssr: false, loading: () => <SectionPlaceholder /> });
+
+export default function PageContent() {
+  // Use a React Fragment as the <main> tag is now in page.tsx
+  return (
+    <>
+      <Hero />
+      <About />
+      <Education />
+      <Projects />
+      <Testimonials />
+      <Packages />
+      <Contact />
+    </>
+  );
+}
+
+--- END OF FILE: src/components/core/PageContent.tsx ---
 
 
 --- FILE: src/components/core/PremiumImageDisplay.tsx ---
@@ -2803,66 +2958,73 @@ export default SkillOrb;
 
 
 --- FILE: src/components/core/SmoothScroller.tsx ---
-// src/components/core/SmoothScroller.tsx
+// src/components/core/SmoothScroller.tsx -- FINAL, CONDITIONALLY-ACTIVATED VERSION
+
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Lenis from '@studio-freight/lenis';
 import { usePathname } from 'next/navigation';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useMediaQuery } from '@/hooks/useMediaQuery'; // Import our conditional hook
 
-// --- Singleton instance of Lenis ---
 let lenis: Lenis | null = null;
 
-// --- Control functions that other components can import and use ---
+// --- MODIFICATION: Make the control functions null-safe ---
+// If Lenis isn't initialized (i.e., on mobile), these functions will now do nothing instead of causing an error.
 export const stopLenis = () => lenis?.stop();
 export const startLenis = () => lenis?.start();
 
 const SmoothScroller = () => {
   const pathname = usePathname();
-  const lenisRef = useRef<Lenis | null>(null);
+  // We'll define "desktop" as screens wider than 1024px.
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
 
   useEffect(() => {
-    if (lenis) {
-      // If an instance already exists, destroy it to prevent duplicates.
-      // This can happen in React's strict mode in development.
-      lenis.destroy();
-    }
+    // --- CORE LOGIC: Only run Lenis setup on desktop devices ---
+    if (isDesktop) {
+      gsap.registerPlugin(ScrollTrigger);
 
-    // --- RE-ENGINEERED "EXPENSIVE" SETTINGS ---
-    lenis = new Lenis({
-      duration: 2.0,      // Longer duration for a more cinematic feel on programmatic scrolls
-      lerp: 0.06,         // Lower lerp for a heavier, more physical "drag"
-      wheelMultiplier: 1.1, // Slightly increases mouse wheel sensitivity for responsiveness
-      syncTouch: true,      // Improves touch-based scrolling synchronization
-    });
-
-    lenisRef.current = lenis;
-
-    const raf = (time: number) => {
-      lenis?.raf(time);
-      requestAnimationFrame(raf);
-    };
-    
-    requestAnimationFrame(raf);
-
-    // --- INTEGRATION: Set CSS variable for cursor and other components to use ---
-    lenis.on('scroll', (e: { velocity: number; isScrolling: boolean }) => {
-      document.documentElement.style.setProperty('--scroll-velocity', e.velocity.toString());
-      if (e.isScrolling) {
-        document.body.classList.add('is-scrolling');
-      } else {
-        document.body.classList.remove('is-scrolling');
+      if (lenis) {
+        lenis.destroy();
       }
-    });
 
-    return () => {
-      lenis?.destroy();
-      lenis = null;
-    };
-  }, []);
+      lenis = new Lenis({
+        duration: 2.0,
+        lerp: 0.06,
+        wheelMultiplier: 1.1,
+        syncTouch: true,
+      });
+      
+      // The critical GSAP synchronization logic
+      lenis.on('scroll', ScrollTrigger.update);
+      
+      gsap.ticker.add((time) => {
+        lenis?.raf(time * 1000);
+      });
+      
+      gsap.ticker.lagSmoothing(0);
+
+      // Return a cleanup function to destroy Lenis and the GSAP ticker when the component unmounts
+      return () => {
+        if (lenis) {
+          gsap.ticker.remove(lenis.raf);
+          lenis.destroy();
+          lenis = null;
+        }
+      };
+    } else {
+      // On mobile, ensure any lingering instance is destroyed.
+      if (lenis) {
+        lenis.destroy();
+        lenis = null;
+      }
+    }
+  }, [isDesktop]); // This effect re-runs if the user resizes their browser across the 1024px breakpoint
 
   useEffect(() => {
-    // Scroll to top on route change
+    // This effect should run on all devices to ensure scrolling to top on navigation
     window.scrollTo(0, 0);
   }, [pathname]);
 
@@ -3122,7 +3284,7 @@ export default function Contact() {
               </div>
             </div>
             <div className="contact-content-reveal">
-              <h3 className="text-3xl font-bold tracking-tight text-primary mb-4">Direct Lines</h3>
+              <h3 className="text-3xl font-bold tracking-tight text-primary mb-4">Contact Info</h3>
               <div className="p-6 bg-surface/50 backdrop-blur-lg border border-secondary/10 rounded-lg space-y-6">
                  <a href="mailto:zain.nextdev@gmail.com" className="group flex items-center gap-4 text-secondary hover:text-primary transition-colors duration-300" data-cursor-hover><Mail className="group-hover:text-accent transition-colors flex-shrink-0" size={24} /><span>zain.nextdev@gmail.com</span></a>
                  <a href="https://wa.me/923236748502" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 text-secondary hover:text-primary transition-colors duration-300" data-cursor-hover><Phone className="group-hover:text-accent transition-colors flex-shrink-0" size={24} /><span>+92 323 6748502</span></a>
@@ -3619,6 +3781,8 @@ export default Packages;
 
 
 --- FILE: src/components/sections/Projects.tsx ---
+// src/components/sections/Projects.tsx -- MODIFIED WITH will-change
+
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -3639,7 +3803,6 @@ const Projects = () => {
 
   const activeProject = projectsData[activeIndex];
 
-  // Section entry animation
   useEffect(() => {
     const ctx = gsap.context(() => {
         const tl = gsap.timeline({
@@ -3655,25 +3818,20 @@ const Projects = () => {
     return () => ctx.revert();
   }, []);
   
-  // Animation for project transitions (IN)
   useEffect(() => {
     if (!detailsContainerRef.current || !imageContainerRef.current) return;
-
     const textElements = gsap.utils.toArray(detailsContainerRef.current.querySelectorAll('.animate-in'));
-    
     gsap.set(textElements, { y: 30, opacity: 0 });
     gsap.set(imageContainerRef.current, { opacity: 0, scale: 0.98 });
 
     const tl = gsap.timeline({ onComplete: () => setIsAnimating(false) });
     tl.to(imageContainerRef.current, { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' })
       .to(textElements, { y: 0, opacity: 1, stagger: 0.08, duration: 0.5, ease: 'power3.out' }, "-=0.4");
-      
   }, [activeIndex]);
 
   const handleNavigation = (direction: 'next' | 'prev') => {
     if (isAnimating) return;
     if (!detailsContainerRef.current || !imageContainerRef.current) return;
-
     setIsAnimating(true);
 
     const newIndex = direction === 'next'
@@ -3690,14 +3848,12 @@ const Projects = () => {
   return (
     <section id="projects" ref={sectionRef} className="relative min-h-screen py-32 px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center overflow-hidden">
       <div className="w-full max-w-7xl flex flex-col items-center">
-        {/* --- MOBILE ADAPTATION: Responsive bottom margin --- */}
         <h2 className="project-title-reveal text-4xl md:text-5xl font-bold tracking-tighter text-center mb-16 md:mb-20 invisible" data-cursor-text>
           Curated Work
         </h2>
-
-        {/* --- MOBILE ADAPTATION: Responsive grid gap --- */}
         <div className="project-content-reveal grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center w-full invisible">
-          <div ref={imageContainerRef} className="relative h-[250px] sm:h-[350px] md:h-[500px] w-full">
+          {/* --- OPTIMIZATION APPLIED HERE --- */}
+          <div ref={imageContainerRef} className="relative h-[250px] sm:h-[350px] md:h-[500px] w-full will-change-transform">
             <PremiumImageDisplay
               key={activeProject.id}
               imageUrl={activeProject.image}
@@ -3705,9 +3861,9 @@ const Projects = () => {
             />
           </div>
           
-          <div ref={detailsContainerRef} className="flex flex-col justify-center">
+          {/* --- OPTIMIZATION APPLIED HERE --- */}
+          <div ref={detailsContainerRef} className="flex flex-col justify-center will-change-transform">
             <div>
-               {/* --- MOBILE ADAPTATION: Responsive font size --- */}
               <h3 className="animate-in text-2xl sm:text-3xl font-bold tracking-tight text-primary mb-3" data-cursor-text>{activeProject.title}</h3>
               <p className="animate-in text-accent font-semibold tracking-wide mb-6">{activeProject.tagline}</p>
               <p className="animate-in text-secondary leading-relaxed mb-8">{activeProject.description}</p>
@@ -3749,6 +3905,8 @@ export default Projects;
 
 
 --- FILE: src/components/sections/Testimonials.tsx ---
+// src/components/sections/Testimonials.tsx -- MODIFIED WITH will-change
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
@@ -3779,8 +3937,6 @@ const Testimonials = () => {
         if (quoteEl) {
           const textElement = quoteEl.querySelector('.quote-text');
           if (textElement) {
-            // --- THE DEFINITIVE FIX FOR WORD WRAPPING ---
-            // Split by words first, then characters. This keeps words intact for line breaks.
             splitInstances.current[index] = new SplitType(textElement as HTMLElement, { types: 'words,chars' });
           }
         }
@@ -3865,7 +4021,8 @@ const Testimonials = () => {
           What My Clients Say
         </h2>
 
-        <div ref={containerRef} className="testimonial-card-container relative w-full p-6 sm:p-8 md:p-12 min-h-[450px] sm:min-h-[420px] md:min-h-[380px] rounded-xl border border-secondary/10 bg-surface/30 backdrop-blur-lg invisible" style={{ transformStyle: 'preserve-3d' }}>
+        {/* --- OPTIMIZATION APPLIED HERE --- */}
+        <div ref={containerRef} className="testimonial-card-container relative w-full p-6 sm:p-8 md:p-12 min-h-[450px] sm:min-h-[420px] md:min-h-[380px] rounded-xl border border-secondary/10 bg-surface/30 backdrop-blur-lg invisible will-change-transform" style={{ transformStyle: 'preserve-3d' }}>
           <Quote className="absolute top-6 sm:top-8 left-6 sm:left-8 text-secondary/10 w-16 h-16 sm:w-20 sm:h-20" strokeWidth={1} />
           
           {testimonialsData.map((testimonial, index) => (
@@ -4102,23 +4259,63 @@ export const useIsWebKit = () => {
 --- END OF FILE: src/hooks/useIsWebKit.ts ---
 
 
+--- FILE: src/hooks/useMediaQuery.ts ---
+// src/hooks/useMediaQuery.ts -- NEW FILE
+
+"use client";
+
+import { useState, useEffect } from 'react';
+
+/**
+ * A client-side hook for tracking the state of a media query.
+ * Handles server-side rendering gracefully by defaulting to `false`.
+ * @param {string} query - The media query string to match (e.g., '(min-width: 768px)').
+ * @returns {boolean} `true` if the query matches, otherwise `false`.
+ */
+export const useMediaQuery = (query: string): boolean => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    // Ensure this runs only on the client
+    if (typeof window !== 'undefined') {
+      const media = window.matchMedia(query);
+      
+      // Update state if the media query match status changes
+      const updateMatch = () => setMatches(media.matches);
+
+      // Set the initial value
+      updateMatch();
+      
+      // Add a listener for changes
+      media.addEventListener('change', updateMatch);
+      
+      // Cleanup listener on component unmount
+      return () => media.removeEventListener('change', updateMatch);
+    }
+  }, [query]);
+
+  return matches;
+};
+
+--- END OF FILE: src/hooks/useMediaQuery.ts ---
+
+
 --- FILE: src/lib/data.ts ---
-// src/lib/data.ts
+// src/lib/data.ts -- REFINED WITH CASE STUDY FORMAT
 
 export const projectsData = [
   {
     id: 1,
     title: "Genius Mart",
-    tagline: "A Modern, Performant E-commerce Platform for Pakistan",
-    description: "Genius Mart is a premium online grocery platform designed for speed and reliability, even on slower networks. It demonstrates how modern web tech can deliver a native-app-like experience, built from scratch in just 26 days.",
+    tagline: "High-Performance E-commerce Platform",
+    description: "The challenge was to build a premium online grocery store for the Pakistani market that felt as fast and responsive as a native app, even on slower networks. The solution involved a server-first architecture using Next.js, resulting in an ultra-fast, PWA-ready platform with a 95+ Lighthouse score, built from scratch in 26 days.",
     features: [
-      "Robust Authentication with Google OAuth",
+      "Robust Google OAuth Authentication",
       "Instant Live Search (<300ms)",
-      "Dynamic Shopping Cart & Persistent Wishlist",
-      "Advanced Product Filtering & Sorting",
-      "Secure Paymob Payment Gateway Integration",
+      "Dynamic Shopping Cart & Wishlist",
+      "Secure Paymob Payment Gateway",
       "Comprehensive User Dashboard",
-      "Fully Responsive PWA",
+      "Fully Responsive PWA Design",
     ],
     stack: [
       "Next.js 15",
@@ -4128,21 +4325,21 @@ export const projectsData = [
       "Vercel",
       "Cloudinary",
     ],
-    image: "/projects/genius-mart-display.png", // IMPORTANT: Create this image
+    image: "/projects/genius-mart-display.png",
     liveSiteUrl: "https://geniusmart.vercel.app/",
   },
   {
     id: 2,
     title: "Genius Mart Admin Portal",
-    tagline: "An Enterprise-Grade Backend Management System",
-    description: "This portal tackles the clunky nature of standard e-commerce backends by providing a blazing-fast, intuitive, and secure interface for managing the Genius Mart platform. It features a hyper-granular, per-user permission system for enterprise-grade security.",
+    tagline: "Enterprise-Grade Backend Management System",
+    description: "Standard e-commerce backends are often slow and clunky. I engineered a custom, blazing-fast admin portal with a hyper-granular, per-user permission system. The outcome is an intuitive, secure, and highly efficient interface that allows for enterprise-grade management of products, orders, and users.",
     features: [
-      "Blazing-Fast Analytics Dashboard",
+      "Real-time Analytics Dashboard",
       "Granular, Per-User Permission System",
-      "Dynamic, Action-Based UI (real-time privileges)",
-      "Professional PDF Invoice Generator",
+      "Dynamic, Action-Based UI",
+      "Professional PDF Invoice Generation",
       "Row Level Security (RLS) Policies",
-      "Custom RPC Functions in PL/pgSQL",
+      "Custom PL/pgSQL Database Functions",
     ],
     stack: [
       "Next.js 15",
@@ -4152,20 +4349,21 @@ export const projectsData = [
       "Ant Design 5",
       "Zustand",
     ],
-    image: "/projects/admin-portal-display.png", // IMPORTANT: Create this image
+    image: "/projects/admin-portal-display.png",
+    // No live site URL for admin portals
   },
   {
     id: 3,
     title: "AJ Collections",
-    tagline: "A Bespoke E-commerce Experience for Fine Accessories",
-    description: "AJ Collections is an online jewelry and fashion accessories store crafted from the ground up. It focuses on delivering a highly attractive, fast, and professional user experience, ensuring every interaction is as curated as the products themselves.",
+    tagline: "Bespoke E-commerce for Fine Accessories",
+    description: "The goal was to create a digital storefront that mirrored the elegance of the jewelry itself. By building a custom Next.js application from the ground up, I delivered a highly attractive and performant user experience, focusing on visual fidelity and a seamless, secure checkout flow to drive conversions.",
     features: [
       "Advanced Image Zoom & Product Gallery",
       "Secure Multi-Step Checkout Flow",
-      "Personalized User Accounts & Order History",
+      "Personalized User Accounts",
       "Dynamic Filtering by Category & Material",
-      "Optimized for Core Web Vitals & Performance",
-      "Custom Admin Panel for Inventory Management",
+      "Optimized for Core Web Vitals",
+      "Custom Admin Inventory Management",
     ],
     stack: [
       "Next.js",
@@ -4175,7 +4373,7 @@ export const projectsData = [
       "Supabase Auth",
       "Supabase Storage",
     ],
-    image: "/projects/ajcollections-display.png", // IMPORTANT: Create this image
+    image: "/projects/ajcollections-display.png",
     liveSiteUrl: "https://ajcollections.vercel.app/",
   },
 ];
