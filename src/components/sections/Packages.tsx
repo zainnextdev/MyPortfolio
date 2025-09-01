@@ -26,19 +26,19 @@ const packagesData = [
     Price: "$300 USD",
   },
   {
-    title: "The Growth Accelerator",
+    title: "Business Pro",
     tagline: "For scaling businesses ready to generate leads and publish content.",
     isBestValue: true,
     features: [
       { name: "Foundation", value: "Everything in The Digital Launchpad, plus:" },
-      { name: "Pages", value: "Up to 10 Pages" },
+      { name: "Pages", value: "Up to 8 Pages" },
       { name: "Headless CMS", value: "Full Content Management (Sanity.io)" },
       { name: "Dynamic Content", value: "Integrated Blog or Portfolio" },
       { name: "Animations", value: "Subtle UI animations with Framer Motion" },
       { name: "Branding", value: "Professional Logo Design & Brand Kit" },
       { name: "Database", value: "Scalable PostgreSQL (Supabase/Neon)" },
     ],
-    timeline: "2-3 Weeks",
+    timeline: "14-18 days",
     Price: "$500 USD",
   },
   {
@@ -53,7 +53,7 @@ const packagesData = [
       { name: "Admin Dashboard", value: "Functional dashboard to manage data" },
       { name: "Support", value: "1 Month of Priority Post-Launch Support" },
     ],
-    timeline: "4-6+ Weeks",
+    timeline: "21-30 days",
     Price: "Starting at $800+ USD",
   },
   {
