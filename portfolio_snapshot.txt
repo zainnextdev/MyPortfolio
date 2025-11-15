@@ -1,5 +1,5 @@
 --- Portfolio Snapshot: Zain Khalid ---
---- Generated on: Wed, 27 Aug 2025 10:53:34 GMT ---
+--- Generated on: Sat, 15 Nov 2025 05:09:42 GMT ---
 
 
 
@@ -3527,7 +3527,7 @@ const Hero = () => {
   const titleClasses = "text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter uppercase mb-4 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-fill-transparent bg-[length:200%_auto] animate-sheen drop-shadow-[0_0_10px_rgba(0,245,212,0.5)]";
 
   return (
-    <section ref={componentRef} id="hero" className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+    <header ref={componentRef} id="hero" className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
       <div ref={parallaxRef} className="pointer-events-none fixed inset-0 -z-10 opacity-0">
         <GridBackground />
       </div>
@@ -3573,7 +3573,7 @@ const Hero = () => {
        <div ref={scrollIndicatorRef} className="absolute bottom-10 md:bottom-28 left-1/2 -translate-x-1/2 opacity-0">
         <PremiumScrollIndicator />
       </div>
-    </section>
+    </header>
   );
 };
 
@@ -3611,19 +3611,19 @@ const packagesData = [
     Price: "$300 USD",
   },
   {
-    title: "The Growth Accelerator",
+    title: "Business Pro",
     tagline: "For scaling businesses ready to generate leads and publish content.",
     isBestValue: true,
     features: [
       { name: "Foundation", value: "Everything in The Digital Launchpad, plus:" },
-      { name: "Pages", value: "Up to 10 Pages" },
+      { name: "Pages", value: "Up to 8 Pages" },
       { name: "Headless CMS", value: "Full Content Management (Sanity.io)" },
       { name: "Dynamic Content", value: "Integrated Blog or Portfolio" },
       { name: "Animations", value: "Subtle UI animations with Framer Motion" },
       { name: "Branding", value: "Professional Logo Design & Brand Kit" },
       { name: "Database", value: "Scalable PostgreSQL (Supabase/Neon)" },
     ],
-    timeline: "2-3 Weeks",
+    timeline: "14-18 days",
     Price: "$500 USD",
   },
   {
@@ -3638,7 +3638,7 @@ const packagesData = [
       { name: "Admin Dashboard", value: "Functional dashboard to manage data" },
       { name: "Support", value: "1 Month of Priority Post-Launch Support" },
     ],
-    timeline: "4-6+ Weeks",
+    timeline: "21-30 days",
     Price: "Starting at $800+ USD",
   },
   {

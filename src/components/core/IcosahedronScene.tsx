@@ -1,3 +1,5 @@
+// src/components/core/IcosahedronScene.tsx -- CORRECTED VERSION
+
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -11,7 +13,6 @@ function Shape() {
   const lightRef = useRef<THREE.PointLight>(null);
   const mousePosition = useRef({ x: 0, y: 0 });
 
-  // Track mouse position
   useMemo(() => {
     const handleMouseMove = (event: MouseEvent) => {
       mousePosition.current = {
@@ -26,13 +27,10 @@ function Shape() {
   const accentColor = useMemo(() => new Color("#00F5D4"), []);
 
   useFrame((state, delta) => {
-    // Constant rotation
     if (meshRef.current) {
       meshRef.current.rotation.x += delta * 0.1;
       meshRef.current.rotation.y += delta * 0.15;
     }
-
-    // Mouse follow (lerp for smoothness)
     const targetPosition = new Vector3(mousePosition.current.x * 2, mousePosition.current.y * 2, 2);
     if (lightRef.current) {
       lightRef.current.position.lerp(targetPosition, 0.05);
@@ -53,12 +51,11 @@ function Shape() {
   );
 }
 
+// THE FIX: The component now returns ONLY the Canvas, without any positioning wrappers.
 export function IcosahedronScene() {
   return (
-    <div className="absolute inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 5] }}>
-        <Shape />
-      </Canvas>
-    </div>
+    <Canvas camera={{ position: [0, 0, 5] }}>
+      <Shape />
+    </Canvas>
   );
 }
